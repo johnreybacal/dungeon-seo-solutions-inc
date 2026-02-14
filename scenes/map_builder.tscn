@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://43ggtur22hp7"]
+
+[sub_resource type="GDScript" id="GDScript_3ilbj"]
+script/source = "extends Node2D
+
+@onready var lines: Line2D = $Lines
+
+var mouse_down = false
+var current_line: Line2D
+
+func _input(event: InputEvent) -> void:
+    if event is InputEventMouseButton:
+        if event.button_index == MOUSE_BUTTON_LEFT:
+            mouse_down = event.pressed
+
+            if mouse_down:
+                current_line = Line2D.new()
+                current_line.default_color = Color.RED
+                current_line.width = 4
+                lines.add_child(current_line)
+                current_line.add_point(event.position)
+
+    elif event is InputEventMouseMotion and mouse_down:
+        current_line.add_point(event.position)"
+
+[node name="MapBuilder" type="Node2D"]
+script = SubResource("GDScript_3ilbj")
+
+[node name="Lines" type="Line2D" parent="."]
