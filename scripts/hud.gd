@@ -1,5 +1,5 @@
 extends CanvasLayer
-class_name MapOverlay
+class_name HUD
 
 var is_shown = false
 

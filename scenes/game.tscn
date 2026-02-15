@@ -23,4 +23,4 @@ limit_bottom = 360
 [node name="Player" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(91, 58)
 
-[node name="MapOverlay" parent="." instance=ExtResource("4_lbhrr")]
+[node name="HUD" parent="." instance=ExtResource("4_lbhrr")]

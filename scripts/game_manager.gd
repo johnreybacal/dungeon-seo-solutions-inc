@@ -3,7 +3,7 @@ extends Node2D
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var player: Player = $Player
 @onready var camera: Camera2D = $Camera2D
-@onready var map_overlay: MapOverlay = $MapOverlay
+@onready var hud: HUD = $HUD
 
 var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
     if event.is_action_pressed("toggle_map") and bullet_timer <= 0 and not player.is_dying:
-        map_overlay.toggle_map()
+        hud.toggle_map()
 
 
 func _physics_process(delta: float) -> void:
@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
     if not player.is_dying:
         camera.position = player.position
         var coords := tile_map_layer.local_to_map(player.position)
-        map_overlay.set_player_coordinates(coords)
+        hud.set_player_coordinates(coords)
 
     if bullet_timer > 0:
         Engine.time_scale = 0.05
@@ -171,7 +171,7 @@ func _on_tile_triggered():
         anvil.player_hit.connect(_on_player_hit)
         add_child.call_deferred(anvil)
         bullet_timer = .1
-        map_overlay.hide_map()
+        hud.hide_map()
 
 func _on_player_hit(source_position: Vector2):
     print("player hit")
