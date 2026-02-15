@@ -65,7 +65,7 @@ func _input(event: InputEvent) -> void:
         var x = coords.x
         var y = coords.y
         if x > min_x and x < max_x and y > min_y and y < max_y:
-            coordinates_label.text = str(coords.x) + ":" + str(coords.y)
+            coordinates_label.text = str(coords.x) + " : " + str(coords.y)
             coordinates_label.visible = true
         else:
             coordinates_label.visible = false

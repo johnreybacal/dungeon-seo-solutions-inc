@@ -16,4 +16,4 @@ func hide_map():
     animation_player.play("RESET")
 
 func set_player_coordinates(coords: Vector2i):
-    player_coordinates_label.text = str(coords.x) + ":" + str(coords.y)
+    player_coordinates_label.text = str(coords.x) + " : " + str(coords.y)

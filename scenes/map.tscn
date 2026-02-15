@@ -27,13 +27,11 @@ tile_set = ExtResource("1_4xfga")
 
 [node name="Hint" type="Node2D" parent="."]
 z_index = 2
-position = Vector2(-89, -386)
+position = Vector2(62, 241)
 
 [node name="Ground" type="Node2D" parent="Hint"]
-position = Vector2(89, 389)
 
 [node name="Sprite2D" type="Sprite2D" parent="Hint/Ground"]
-position = Vector2(32, 236)
 scale = Vector2(2, 2)
 texture = ExtResource("4_0cso3")
 hframes = 2
@@ -41,19 +39,19 @@ vframes = 2
 frame = 1
 
 [node name="Label" type="Label" parent="Hint/Ground"]
-offset_left = 45.0
-offset_top = 227.0
-offset_right = 117.0
-offset_bottom = 247.0
+offset_left = 13.0
+offset_top = -9.0
+offset_right = 85.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_gldc4")
 text = "1: Ground"
+metadata/_edit_use_anchors_ = true
 
 [node name="Wall" type="Node2D" parent="Hint"]
-position = Vector2(192, 389)
+position = Vector2(94, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Hint/Wall"]
-position = Vector2(32, 236)
 scale = Vector2(2, 2)
 texture = ExtResource("4_0cso3")
 hframes = 2
@@ -61,19 +59,19 @@ vframes = 2
 frame = 2
 
 [node name="Label" type="Label" parent="Hint/Wall"]
-offset_left = 45.0
-offset_top = 227.0
-offset_right = 117.0
-offset_bottom = 247.0
+offset_left = 13.0
+offset_top = -9.0
+offset_right = 85.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_gldc4")
 text = "2: Wall"
+metadata/_edit_use_anchors_ = true
 
 [node name="Trap" type="Node2D" parent="Hint"]
-position = Vector2(273, 389)
+position = Vector2(166, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Hint/Trap"]
-position = Vector2(32, 236)
 scale = Vector2(2, 2)
 texture = ExtResource("4_0cso3")
 hframes = 2
@@ -81,30 +79,30 @@ vframes = 2
 frame = 3
 
 [node name="Label" type="Label" parent="Hint/Trap"]
-offset_left = 45.0
-offset_top = 227.0
-offset_right = 117.0
-offset_bottom = 247.0
+offset_left = 13.0
+offset_top = -9.0
+offset_right = 85.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_gldc4")
 text = "3: Trap"
 metadata/_edit_use_anchors_ = true
 
 [node name="Enemy" type="Node2D" parent="Hint"]
-position = Vector2(360, 389)
+position = Vector2(241, -1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Hint/Enemy"]
-position = Vector2(32, 236)
+position = Vector2(0, 1)
 scale = Vector2(2, 2)
 texture = ExtResource("4_0cso3")
 hframes = 2
 vframes = 2
 
 [node name="Label" type="Label" parent="Hint/Enemy"]
-offset_left = 45.0
-offset_top = 227.0
-offset_right = 117.0
-offset_bottom = 247.0
+offset_left = 13.0
+offset_top = -8.0
+offset_right = 85.0
+offset_bottom = 12.0
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_gldc4")
 text = "4: Enemy"
