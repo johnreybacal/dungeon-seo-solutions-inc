@@ -2,12 +2,26 @@ extends Node2D
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var player: Player = $Player
+@onready var camera: Camera2D = $Player/Camera2D
+
+var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
 var traps: Array[Vector2i] = []
+var last_trap_triggered := Vector2i(-1, -1)
+var bullet_timer: float = 0
 
 func _ready() -> void:
     _draw_dungeon()
     player.triggered.connect(_on_tile_triggered)
+
+func _physics_process(delta: float) -> void:
+    if bullet_timer > 0:
+        Engine.time_scale = 0.25
+        bullet_timer -= delta
+        camera.zoom = camera.zoom.move_toward(Vector2(8, 8), delta * 100)
+    else:
+        Engine.time_scale = 1
+        camera.zoom = camera.zoom.move_toward(Vector2(4, 4), delta * 10)
 
 func _draw_dungeon():
     tile_map_layer.clear()
@@ -69,8 +83,8 @@ func _draw_dungeon():
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 3, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 0, 0, 0, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 2, 2, 2, 4, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -118,5 +132,18 @@ func _draw_dungeon():
 
 func _on_tile_triggered():
     var coords := tile_map_layer.local_to_map(player.position)
+    var trap_position := tile_map_layer.map_to_local(coords)
     if coords in traps:
-        print("trap triggered")
+        if coords == last_trap_triggered and bullet_timer > 0:
+            # Retrigger
+            return
+        last_trap_triggered = coords
+        var anvil: AnvilTrap = anvil_trap.instantiate()
+        anvil.position = trap_position
+        anvil.player_hit.connect(_on_player_hit)
+        add_child.call_deferred(anvil)
+        bullet_timer = .1
+
+func _on_player_hit():
+    print("player hit")
+    # get_tree().reload_current_scene()
