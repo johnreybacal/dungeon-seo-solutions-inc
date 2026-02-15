@@ -35,9 +35,8 @@ func _physics_process(delta: float) -> void:
 
     if not player.is_dying:
         camera.position = player.position
-
-    var coords := tile_map_layer.local_to_map(player.position)
-    map_overlay.set_player_coordinates(coords)
+        var coords := tile_map_layer.local_to_map(player.position)
+        map_overlay.set_player_coordinates(coords)
 
     if bullet_timer > 0:
         Engine.time_scale = 0.05
