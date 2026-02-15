@@ -77,7 +77,18 @@ offset_bottom = 710.0
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_glx5p")
 theme_override_font_sizes/font_size = 44
-text = "22:22"
+text = "22, 22"
+
+[node name="MapHintLabel" type="Label" parent="."]
+z_index = 1
+offset_left = 994.0
+offset_top = 660.0
+offset_right = 1264.0
+offset_bottom = 710.0
+theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
+theme_override_fonts/font = ExtResource("2_glx5p")
+theme_override_font_sizes/font_size = 44
+text = "Q: Update map"
 
 [node name="Backdrop" type="Sprite2D" parent="."]
 position = Vector2(640, 692)

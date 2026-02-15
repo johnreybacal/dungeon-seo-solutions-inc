@@ -43,9 +43,11 @@ func _physics_process(delta: float) -> void:
         audio_pitch_shift.pitch_scale = 0.05
         bullet_timer -= delta
         camera.zoom = camera.zoom.move_toward(Vector2(8, 8), delta * 100)
+        if bullet_timer <= 0:
+            Engine.time_scale = 1
+            audio_pitch_shift.pitch_scale = 1
+            hud.show()
     else:
-        Engine.time_scale = 1
-        audio_pitch_shift.pitch_scale = 1
         camera.zoom = camera.zoom.move_toward(Vector2(4, 4), delta * 10)
 
 func _draw_dungeon():
@@ -171,7 +173,7 @@ func _on_tile_triggered():
         anvil.player_hit.connect(_on_player_hit)
         add_child.call_deferred(anvil)
         bullet_timer = .1
-        hud.hide_map()
+        hud.hide_hud()
 
 func _on_player_hit(source_position: Vector2):
     print("player hit")
