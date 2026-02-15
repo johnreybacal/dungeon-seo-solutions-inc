@@ -22,6 +22,12 @@ Bullet time
  - Trigger traps (or avoid if already mapped)
    - Survive
    - Place trap location on map
+   - Types
+     - Floor Spike
+     - Trapdoor
+     - Spike ball
+     - Arrow
+     - Flame thrower
  - Avoid enemy vision
    - Place enemy location on map
  - Find finish door

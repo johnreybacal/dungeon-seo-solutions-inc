@@ -1,9 +1,13 @@
 extends Node2D
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
+@onready var player: Player = $Player
+
+var traps: Array[Vector2i] = []
 
 func _ready() -> void:
     _draw_dungeon()
+    player.triggered.connect(_on_tile_triggered)
 
 func _draw_dungeon():
     tile_map_layer.clear()
@@ -11,6 +15,8 @@ func _draw_dungeon():
     # 0: ground
     # 1: top wall
     # 2: wall
+    # 3: healing well
+    # 4 and beyond: traps
     var cells := [
         # x ->
         # y ↓
@@ -62,11 +68,11 @@ func _draw_dungeon():
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 0, 0, 0, 3, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 2, 2, 2, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 1, 2, 2, 2, 4, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -89,12 +95,15 @@ func _draw_dungeon():
         print(y_cells)
         var x: int = -1
         for cell in y_cells:
-            ground_coordinates.append(Vector2i(x, y))
+            var coords = Vector2i(x, y)
+            ground_coordinates.append(coords)
             # if cell == 0:
             if cell == 1:
-                top_walls_coordinates.append(Vector2i(x, y))
+                top_walls_coordinates.append(coords)
             if cell == 2:
-                wall_coordinates.append(Vector2i(x, y))
+                wall_coordinates.append(coords)
+            if cell > 3:
+                traps.append(coords)
             x += 1
         y += 1
     
@@ -104,3 +113,10 @@ func _draw_dungeon():
     tile_map_layer.set_cells_terrain_connect(wall_coordinates, 0, 2, true)
     # Draw top walls (will fix walls)
     tile_map_layer.set_cells_terrain_connect(top_walls_coordinates, 0, 0, true)
+
+    player.position = tile_map_layer.map_to_local(Vector2i(1, 1))
+
+func _on_tile_triggered():
+    var coords := tile_map_layer.local_to_map(player.position)
+    if coords in traps:
+        print("trap triggered")

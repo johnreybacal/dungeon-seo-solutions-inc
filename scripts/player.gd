@@ -1,9 +1,12 @@
 extends CharacterBody2D
+class_name Player
 
 var move_speed = 100
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $Sprite2D/AnimationPlayer
+
+signal triggered()
 
 func _physics_process(_delta: float) -> void:
     _handle_input()
@@ -26,3 +29,6 @@ func _handle_animation():
         animation_player.play("RESET")
     else:
         animation_player.play("walk")
+
+func _on_trigger_area_body_entered(_body: Node2D) -> void:
+    triggered.emit()

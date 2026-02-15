@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsdf5hsph7obg"]
+[gd_scene load_steps=8 format=3 uid="uid://dsdf5hsph7obg"]
 
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://coxfdn52kikch" path="res://scripts/player.gd" id="1_g2els"]
@@ -92,6 +92,9 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 7.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
+size = Vector2(6.75, 6)
+
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_g2els")
@@ -111,3 +114,13 @@ libraries = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_g2els")
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_g2els")
+
+[connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]
