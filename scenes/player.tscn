@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsdf5hsph7obg"]
+[gd_scene load_steps=9 format=3 uid="uid://dsdf5hsph7obg"]
 
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://coxfdn52kikch" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="AudioStream" uid="uid://bsf1jppthocdy" path="res://assets/sfx/move.ogg" id="3_qhqgy"]
-[ext_resource type="AudioStream" uid="uid://b7l8vmpjgwp5f" path="res://assets/sfx/hurt.ogg" id="4_dqkch"]
 
 [sub_resource type="Animation" id="Animation_qhqgy"]
 length = 0.001
@@ -181,6 +180,7 @@ radius = 7.0
 radius = 4.0
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 5
 motion_mode = 1
 script = ExtResource("1_g2els")
 
@@ -210,10 +210,8 @@ debug_color = Color(0.75134325, 0.3831781, 0.6604636, 0.41960785)
 
 [node name="SFX" type="Node2D" parent="."]
 
-[node name="Hurt" type="AudioStreamPlayer" parent="SFX"]
-stream = ExtResource("4_dqkch")
-
 [node name="Walk" type="AudioStreamPlayer" parent="SFX"]
 volume_db = -10.0
+bus = &"SFX"
 
 [connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]

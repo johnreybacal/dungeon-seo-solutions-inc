@@ -11,9 +11,13 @@ var last_trap_triggered := Vector2i(-1, -1)
 var last_trap_cooldown: float
 var bullet_timer: float = 0
 
+var audio_pitch_shift: AudioEffectPitchShift
+
 func _ready() -> void:
     _draw_dungeon()
     player.triggered.connect(_on_tile_triggered)
+    audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("Master"), 0)
+
 
 func _physics_process(delta: float) -> void:
     if not player.is_dying:
@@ -22,10 +26,12 @@ func _physics_process(delta: float) -> void:
         last_trap_cooldown -= delta
     if bullet_timer > 0:
         Engine.time_scale = 0.05
+        audio_pitch_shift.pitch_scale = 0.05
         bullet_timer -= delta
         camera.zoom = camera.zoom.move_toward(Vector2(8, 8), delta * 100)
     else:
         Engine.time_scale = 1
+        audio_pitch_shift.pitch_scale = 1
         camera.zoom = camera.zoom.move_toward(Vector2(4, 4), delta * 10)
 
 func _draw_dungeon():
@@ -145,7 +151,7 @@ func _on_tile_triggered():
             # Retrigger / Trap cooldown
             return
         last_trap_triggered = coords
-        last_trap_cooldown = 2
+        last_trap_cooldown = 3
         var anvil: AnvilTrap = anvil_trap.instantiate()
         anvil.position = trap_position
         anvil.player_hit.connect(_on_player_hit)

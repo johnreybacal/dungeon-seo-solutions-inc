@@ -6,8 +6,6 @@ var is_dying := false
 var dying_rotation: float
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var hurt_sfx: AudioStreamPlayer = $SFX/Hurt
-
 
 signal triggered()
 
@@ -45,7 +43,6 @@ func _on_trigger_area_body_entered(_body: Node2D) -> void:
     triggered.emit()
 
 func die(source_position: Vector2):
-    hurt_sfx.play()
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)
     dying_rotation = deg_to_rad(-10) if x < 0 else deg_to_rad(10)
