@@ -43,6 +43,7 @@ func _on_trigger_area_body_entered(_body: Node2D) -> void:
     triggered.emit()
 
 func die(source_position: Vector2):
+    z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)
     dying_rotation = deg_to_rad(-10) if x < 0 else deg_to_rad(10)
