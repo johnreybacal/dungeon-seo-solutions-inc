@@ -5,19 +5,24 @@ var move_speed = 100
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $Sprite2D/AnimationPlayer
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+    _handle_input()
+    _handle_animation()
+
+func _handle_input():
     var move_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
     velocity = move_vector.normalized() * move_speed
 
-    if move_vector.x > 0:
+    move_and_slide()
+
+func _handle_animation():
+    if velocity.x > 0:
         sprite_2d.flip_h = false
-    elif move_vector.x < 0:
+    elif velocity.x < 0:
         sprite_2d.flip_h = true
 
-    if move_vector != Vector2.ZERO:
-        animation_player.play("walk")
-    else:
+    if velocity == Vector2.ZERO:
         animation_player.play("RESET")
-
-    move_and_slide()
+    else:
+        animation_player.play("walk")
