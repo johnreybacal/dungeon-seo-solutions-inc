@@ -7,8 +7,7 @@ extends Node2D
 var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
 var traps: Array[Vector2i] = []
-var last_trap_triggered := Vector2i(-1, -1)
-var last_trap_cooldown: float
+var trap_cooldowns: Dictionary[Vector2i, float]
 var bullet_timer: float = 0
 
 var audio_pitch_shift: AudioEffectPitchShift
@@ -20,10 +19,14 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+    for key in trap_cooldowns.keys():
+        if trap_cooldowns[key] > 0:
+            trap_cooldowns[key] -= delta
+
+
     if not player.is_dying:
         camera.position = player.position
-    if last_trap_cooldown > 0:
-        last_trap_cooldown -= delta
+
     if bullet_timer > 0:
         Engine.time_scale = 0.05
         audio_pitch_shift.pitch_scale = 0.05
@@ -128,6 +131,7 @@ func _draw_dungeon():
                 wall_coordinates.append(coords)
             if cell > 3:
                 traps.append(coords)
+                trap_cooldowns[coords] = 0
             x += 1
         y += 1
     
@@ -147,11 +151,10 @@ func _on_tile_triggered():
     var trap_position := tile_map_layer.map_to_local(coords)
     if coords in traps:
         print("trap, ", coords)
-        if coords == last_trap_triggered and (bullet_timer > 0 or last_trap_cooldown > 0):
+        if trap_cooldowns[coords] > 0:
             # Retrigger / Trap cooldown
             return
-        last_trap_triggered = coords
-        last_trap_cooldown = 3
+        trap_cooldowns[coords] = 2
         var anvil: AnvilTrap = anvil_trap.instantiate()
         anvil.position = trap_position
         anvil.player_hit.connect(_on_player_hit)
