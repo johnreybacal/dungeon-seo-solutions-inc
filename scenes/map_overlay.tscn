@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=3 uid="uid://i7qpg6tjfq6s"]
+
+[ext_resource type="Script" uid="uid://dv7bg556b7k6e" path="res://scripts/map_overlay.gd" id="1_q1ok0"]
+[ext_resource type="PackedScene" uid="uid://5l2vv43h2d7v" path="res://scenes/map.tscn" id="1_w7dup"]
+[ext_resource type="FontFile" uid="uid://dy4n1bik70bfr" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_glx5p"]
+
+[sub_resource type="Gradient" id="Gradient_glx5p"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.25490198, 0.18431373, 0.22352941, 0.5882353)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_71u3i"]
+gradient = SubResource("Gradient_glx5p")
+width = 1280
+height = 100
+
+[sub_resource type="Animation" id="Animation_w7dup"]
+resource_name = "show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MapContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(640, 1100), Vector2(640, 360)]
+}
+
+[sub_resource type="Animation" id="Animation_q1ok0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MapContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(640, 1100)]
+}
+
+[sub_resource type="Animation" id="Animation_glx5p"]
+resource_name = "hide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MapContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(640, 360), Vector2(640, 1100)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_glx5p"]
+_data = {
+&"RESET": SubResource("Animation_q1ok0"),
+&"hide": SubResource("Animation_glx5p"),
+&"show": SubResource("Animation_w7dup")
+}
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_q1ok0")
+
+[node name="PlayerCoordinatesLabel" type="Label" parent="."]
+z_index = 1
+offset_left = 26.0
+offset_top = 652.0
+offset_right = 98.0
+offset_bottom = 702.0
+theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
+theme_override_fonts/font = ExtResource("2_glx5p")
+theme_override_font_sizes/font_size = 44
+text = "1:1"
+
+[node name="Backdrop" type="Sprite2D" parent="."]
+position = Vector2(640, 680)
+texture = SubResource("GradientTexture2D_71u3i")
+
+[node name="MapContainer" type="Node2D" parent="."]
+position = Vector2(640, 1100)
+
+[node name="Map" parent="MapContainer" instance=ExtResource("1_w7dup")]
+position = Vector2(-600, -400)
+scale = Vector2(3, 3)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MapContainer"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_glx5p")
+}

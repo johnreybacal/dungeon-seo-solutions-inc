@@ -3,6 +3,7 @@ extends Node2D
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var player: Player = $Player
 @onready var camera: Camera2D = $Camera2D
+@onready var map_overlay: MapOverlay = $MapOverlay
 
 var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
@@ -12,10 +13,18 @@ var bullet_timer: float = 0
 
 var audio_pitch_shift: AudioEffectPitchShift
 
+var vertical_points: PackedVector2Array;
+var horizontal_points: PackedVector2Array;
+
 func _ready() -> void:
     _draw_dungeon()
     player.triggered.connect(_on_tile_triggered)
     audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("Master"), 0)
+    Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+func _input(event: InputEvent) -> void:
+    if event.is_action_pressed("toggle_map") and bullet_timer <= 0 and not player.is_dying:
+        map_overlay.toggle_map()
 
 
 func _physics_process(delta: float) -> void:
@@ -26,6 +35,9 @@ func _physics_process(delta: float) -> void:
 
     if not player.is_dying:
         camera.position = player.position
+
+    var coords := tile_map_layer.local_to_map(player.position)
+    map_overlay.set_player_coordinates(coords)
 
     if bullet_timer > 0:
         Engine.time_scale = 0.05
@@ -160,6 +172,7 @@ func _on_tile_triggered():
         anvil.player_hit.connect(_on_player_hit)
         add_child.call_deferred(anvil)
         bullet_timer = .1
+        map_overlay.hide_map()
 
 func _on_player_hit(source_position: Vector2):
     print("player hit")
