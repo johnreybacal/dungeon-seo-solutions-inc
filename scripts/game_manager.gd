@@ -2,12 +2,13 @@ extends Node2D
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var player: Player = $Player
-@onready var camera: Camera2D = $Player/Camera2D
+@onready var camera: Camera2D = $Camera2D
 
 var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
 var traps: Array[Vector2i] = []
 var last_trap_triggered := Vector2i(-1, -1)
+var last_trap_cooldown: float
 var bullet_timer: float = 0
 
 func _ready() -> void:
@@ -15,8 +16,12 @@ func _ready() -> void:
     player.triggered.connect(_on_tile_triggered)
 
 func _physics_process(delta: float) -> void:
+    if not player.is_dying:
+        camera.position = player.position
+    if last_trap_cooldown > 0:
+        last_trap_cooldown -= delta
     if bullet_timer > 0:
-        Engine.time_scale = 0.25
+        Engine.time_scale = 0.05
         bullet_timer -= delta
         camera.zoom = camera.zoom.move_toward(Vector2(8, 8), delta * 100)
     else:
@@ -106,7 +111,6 @@ func _draw_dungeon():
 
     var y: int = -1
     for y_cells in cells:
-        print(y_cells)
         var x: int = -1
         for cell in y_cells:
             var coords = Vector2i(x, y)
@@ -130,20 +134,24 @@ func _draw_dungeon():
 
     player.position = tile_map_layer.map_to_local(Vector2i(1, 1))
 
+    print("traps at: ", traps)
+
 func _on_tile_triggered():
     var coords := tile_map_layer.local_to_map(player.position)
     var trap_position := tile_map_layer.map_to_local(coords)
     if coords in traps:
-        if coords == last_trap_triggered and bullet_timer > 0:
-            # Retrigger
+        print("trap, ", coords)
+        if coords == last_trap_triggered and (bullet_timer > 0 or last_trap_cooldown > 0):
+            # Retrigger / Trap cooldown
             return
         last_trap_triggered = coords
+        last_trap_cooldown = 2
         var anvil: AnvilTrap = anvil_trap.instantiate()
         anvil.position = trap_position
         anvil.player_hit.connect(_on_player_hit)
         add_child.call_deferred(anvil)
         bullet_timer = .1
 
-func _on_player_hit():
+func _on_player_hit(source_position: Vector2):
     print("player hit")
-    # get_tree().reload_current_scene()
+    player.die(source_position)

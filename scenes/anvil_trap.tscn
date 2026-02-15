@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4iak5w10ggvc"]
+[gd_scene load_steps=8 format=3 uid="uid://c4iak5w10ggvc"]
 
 [ext_resource type="Script" uid="uid://cwgaun7va8agv" path="res://scripts/anvil_trap.gd" id="1_1jrl2"]
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_1ly65"]
+[ext_resource type="AudioStream" uid="uid://btdmus7ibgqjk" path="res://assets/sfx/fall.ogg" id="3_jmml4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ly65"]
 size = Vector2(13, 10)
@@ -16,7 +17,7 @@ tracks/0/path = NodePath("Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0, -40), Vector2(0, 0)]
@@ -28,7 +29,7 @@ tracks/1/path = NodePath("Shadow:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.25),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(2, 2), Vector2(1, 1)]
@@ -40,7 +41,7 @@ tracks/2/path = NodePath("Sprite2D:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.25),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(2, 2), Vector2(1, 1)]
@@ -52,10 +53,10 @@ tracks/3/path = NodePath("Shadow:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.25, 1),
+"times": PackedFloat32Array(0, 0.2, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(0, 0, 0, 0.39215687), Color(0, 0, 0, 0.78431374), Color(0, 0, 0, 0)]
+"values": [Color(0, 0, 0, 0.19607843), Color(0, 0, 0, 0.78431374), Color(0, 0, 0, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -64,7 +65,7 @@ tracks/4/path = NodePath("CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.175, 0.25),
+"times": PackedFloat32Array(0, 0.15, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -186,6 +187,10 @@ texture = ExtResource("1_1ly65")
 hframes = 12
 vframes = 11
 frame = 74
+
+[node name="Sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_jmml4")
+autoplay = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

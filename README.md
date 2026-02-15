@@ -49,3 +49,10 @@ Bullet time
 
 ## TODO
  - Try to make this fun? T-T
+
+## Credits
+ - https://kenney.nl/
+   - Desert Shooter Pack:
+      - Walk SFX
+      - Hurt SFX
+   - Tiny Dungeon: Textures
