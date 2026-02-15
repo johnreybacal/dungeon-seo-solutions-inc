@@ -6,6 +6,10 @@ enum MapCell {
 }
 
 @onready var coordinates_label: Label = $CoordinatesLabel
+@onready var ground_hint: Node2D = $Hint/Ground
+@onready var wall_hint: Node2D = $Hint/Wall
+@onready var trap_hint: Node2D = $Hint/Trap
+@onready var enemy_hint: Node2D = $Hint/Enemy
 
 var current_cell: MapCell = MapCell.Ground
 
@@ -37,19 +41,21 @@ func _ready() -> void:
             if x in x_walls or y in y_walls:
                 tile_map_layer.set_cell(coords, 0, cell_coords[MapCell.Wall])
 
-            # if cell == 1 or cell == 2:
-            #     print("wall")
-
+    _reset_hint_position()
 
 func _input(event: InputEvent) -> void:
     if event.is_action_pressed("use_ground"):
         current_cell = MapCell.Ground
+        _reset_hint_position()
     if event.is_action_pressed("use_wall"):
         current_cell = MapCell.Wall
+        _reset_hint_position()
     if event.is_action_pressed("use_trap"):
         current_cell = MapCell.Trap
+        _reset_hint_position()
     if event.is_action_pressed("use_enemy"):
         current_cell = MapCell.Enemy
+        _reset_hint_position()
 
     # https://www.youtube.com/watch?v=U_TGOgp5-pc
     if event is InputEventMouseButton:
@@ -69,6 +75,13 @@ func _input(event: InputEvent) -> void:
             coordinates_label.visible = true
         else:
             coordinates_label.visible = false
+
+func _reset_hint_position():
+    ground_hint.position.y = -2 if current_cell == MapCell.Ground else 0
+    wall_hint.position.y = -2 if current_cell == MapCell.Wall else 0
+    trap_hint.position.y = -2 if current_cell == MapCell.Trap else 0
+    enemy_hint.position.y = -2 if current_cell == MapCell.Enemy else 0
+
 
 func _draw_cell():
     var coords := tile_map_layer.local_to_map(get_local_mouse_position() - tile_map_layer.position)
