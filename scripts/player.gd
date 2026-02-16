@@ -7,6 +7,10 @@ var dying_rotation: float
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+var chasers: Array[int]
+var vanish_timer = 0
+var is_hidden = false
+
 signal triggered()
 
 func _physics_process(delta: float) -> void:
@@ -18,6 +22,7 @@ func _physics_process(delta: float) -> void:
 
     _handle_input()
     _handle_animation()
+
 
 func _handle_input():
     var move_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -33,8 +38,15 @@ func _handle_animation():
         sprite_2d.flip_h = true
 
     if velocity == Vector2.ZERO:
-        animation_player.play("RESET")
+        # can only hide when not detected
+        if len(chasers) > 0:
+            animation_player.play("RESET")
+        elif not is_hidden:
+            animation_player.play("hide")
+
     else:
+        collision_layer = 7
+        is_hidden = false
         animation_player.play("walk")
 
 func _on_trigger_area_body_entered(_body: Node2D) -> void:
@@ -51,3 +63,17 @@ func die(source_position: Vector2):
     collision_mask = 0
     is_dying = true
     animation_player.play("RESET")
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+    if anim_name == "hide":
+        print("hidden")
+        is_hidden = true
+        collision_layer = 0
+
+func add_chaser(node: Node2D):
+    chasers.append(node.get_instance_id())
+
+func remove_chaser(node: Node2D):
+    var instance_id = node.get_instance_id()
+    chasers = chasers.filter(func(id: int): return id != instance_id)

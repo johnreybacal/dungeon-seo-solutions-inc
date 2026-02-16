@@ -4,6 +4,7 @@ class_name Enemy
 @export var vision_renderer: Polygon2D
 @export var alert_color: Color
 @onready var vision_cone: Node2D = $VisionCone
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @onready var original_color = vision_renderer.color if vision_renderer else Color.WHITE
 @onready var original_position = position
@@ -57,23 +58,27 @@ func _physics_process(delta: float) -> void:
             vision_cone.rotate(patrol_rotation * delta)
 
     if navigation_agent.is_navigation_finished():
+        animation_player.play("RESET")
         return
 
     var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 
     velocity = global_position.direction_to(next_path_position) * move_speed
+    animation_player.play("walk")
     
     move_and_slide()
 
 func _on_vision_cone_area_body_entered(body: Node2D) -> void:
     if body is Player:
         target = body
+        body.add_chaser(self )
         set_movement_target(body.position)
         vision_renderer.color = alert_color
 
 func _on_vision_cone_area_body_exited(body: Node2D) -> void:
     if body is Player:
         set_movement_target(body.position)
+        body.remove_chaser(self )
         target = null
         return_timer = 3
         vision_renderer.color = original_color
