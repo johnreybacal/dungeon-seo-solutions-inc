@@ -47,6 +47,13 @@ Bullet time
      - Floors explored
      - Adventurers trap casualty
 
+## Difficulty
+ - Gameplay toggle
+   - map for schoolgirls: map and walls are already set, only need to set trap and enemy location
+   - map with some chest hair: draw everything by yourself
+ - Max HP setter
+   - default: 1
+
 ## TODO
  - Try to make this fun? T-T
 
