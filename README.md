@@ -57,6 +57,12 @@ Bullet time
 ## TODO
  - Try to make this fun? T-T
 
+## Collision
+1. World
+2. Trap trigger
+3. Player
+4. Enemy
+
 ## Credits
  - https://kenney.nl/
    - Desert Shooter Pack:

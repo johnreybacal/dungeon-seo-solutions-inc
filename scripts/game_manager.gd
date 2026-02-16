@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var dungeon_tile_map: TileMapLayer = $DungeonTileMap
+@onready var dungeon_tile_map: TileMapLayer = $NavigationRegion2D/DungeonTileMap
 @onready var map_guide_tile_map: TileMapLayer = $MapGuideTileMap
 @onready var player: Player = $Player
 @onready var camera: Camera2D = $Camera2D
@@ -98,7 +98,6 @@ func _draw_dungeon():
     print("traps at: ", traps)
 
 func _redraw_map_guide():
-    print("_redraw_map_guide")
     var cells = MapManager.player_map
     var y: int = 0
     for y_cells in cells:

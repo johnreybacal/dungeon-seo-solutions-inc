@@ -144,5 +144,4 @@ func _check_right(pos: Vector2i) -> int:
 
 func update_player_map(coords: Vector2i, value: int):
     player_map[coords.y][coords.x] = value
-    print(coords, value)
     map_updated.emit()
