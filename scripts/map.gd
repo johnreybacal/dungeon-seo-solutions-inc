@@ -22,24 +22,30 @@ var cell_coords = {
 
 var is_mouse_down = false
 
-var y_walls = [-1, 0, 1, 21]
-var x_walls = [-1, 0, 41]
-var min_y = -1
-var max_y = 21
-var min_x = -1
-var max_x = 41
+var min_y = 2
+var max_y = 20
+var min_x = 0
+var max_x = 40
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 
 func _ready() -> void:
-    for y in range(-1, 22):
-        for x in range(-1, 42):
-            var coords = Vector2i(x, y)
+    var cells = MapManager.player_map
+    var y: int = 0
+    for y_cells in cells:
+        var x: int = 0
+        for cell in y_cells:
+            var tile: MapCell
+            if cell == 0:
+                tile = MapCell.Ground
+            if cell == 1 or cell == 2:
+                tile = MapCell.Wall
             
-            tile_map_layer.set_cell(coords, 0, cell_coords[MapCell.Ground])
 
-            if x in x_walls or y in y_walls:
-                tile_map_layer.set_cell(coords, 0, cell_coords[MapCell.Wall])
+            if tile:
+                tile_map_layer.set_cell(Vector2i(x, y), 0, cell_coords[tile])
+            x += 1
+        y += 1
 
     _reset_hint_position()
 
@@ -70,7 +76,7 @@ func _input(event: InputEvent) -> void:
         var coords := tile_map_layer.local_to_map(get_local_mouse_position() - tile_map_layer.position)
         var x = coords.x
         var y = coords.y
-        if x > min_x and x < max_x and y > min_y and y < max_y:
+        if x >= min_x and x <= max_x and y >= min_y and y <= max_y:
             coordinates_label.text = str(coords.x) + ", " + str(coords.y)
             coordinates_label.visible = true
         else:
@@ -87,10 +93,9 @@ func _draw_cell():
     var coords := tile_map_layer.local_to_map(get_local_mouse_position() - tile_map_layer.position)
     var x = coords.x
     var y = coords.y
-    # don't draw on walls
-    if x in x_walls or y in y_walls:
-        return
+
     # don't draw outside
     if x < min_x or x > max_x or y < min_y or y > max_y:
         return
     tile_map_layer.set_cell(coords, 0, cell_coords[current_cell])
+    MapManager.update_player_map(Vector2i(x + 1, y + 1), current_cell)

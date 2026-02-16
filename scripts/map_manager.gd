@@ -30,9 +30,16 @@ var template := [
 var map
 var player_map: Array
 
+signal map_updated()
+
 func generate_map():
     # Walker generator
     map = template.duplicate_deep()
+    player_map = template.duplicate_deep()
+    for y in range(len(player_map)):
+        for x in range(len(player_map[y])):
+            if player_map[y][x] == 2:
+                player_map[y][x] = 1
 
     # Start position is 1, 2
     var pos := Vector2i(3, 4)
@@ -134,3 +141,8 @@ func _check_right(pos: Vector2i) -> int:
         if map[pos.y][pos.x + i] != 0:
             return i
     return max_step
+
+func update_player_map(coords: Vector2i, value: int):
+    player_map[coords.y][coords.x] = value
+    print(coords, value)
+    map_updated.emit()

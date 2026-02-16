@@ -1,0 +1,13 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://c7awm2to6i8cd"]
+
+[ext_resource type="Texture2D" uid="uid://b0tgcnw2afai7" path="res://assets/sprites/map_guide.png" id="1_2j3os"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
+texture = ExtResource("1_2j3os")
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/modulate = Color(1, 1, 1, 0.39215687)
+2:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_p57ef")
