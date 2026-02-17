@@ -10,13 +10,16 @@ class_name Enemy
 @onready var original_position = position
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 
-var move_speed: float = 50
+var move_speed: float = 80
 var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
 var target_in_sight: bool
 
 var patrol_rotation = deg_to_rad(30)
+
+var is_dying := false
+var dying_rotation: float
 
 func _ready() -> void:
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
@@ -42,6 +45,14 @@ func set_movement_target(movement_target: Vector2):
     navigation_agent.target_position = movement_target
 
 func _physics_process(delta: float) -> void:
+    if is_dying:
+        velocity += get_gravity() * (delta / 2)
+        rotate(dying_rotation)
+        move_and_slide()
+        if position.y > 500:
+            queue_free()
+        return
+
     if target_in_sight:
         vision_cone.look_at(target.position)
         if retarget_timer > 0:
@@ -65,7 +76,9 @@ func _physics_process(delta: float) -> void:
 
     var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 
-    velocity = global_position.direction_to(next_path_position) * move_speed
+    var speed = move_speed if target_in_sight else move_speed * .5
+    velocity = global_position.direction_to(next_path_position) * speed
+    
     animation_player.play("walk")
     
     move_and_slide()
@@ -83,5 +96,17 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
         set_movement_target(body.position)
         body.remove_chaser(self )
         target_in_sight = false
-        return_timer = 3
+        return_timer = 5
         vision_renderer.color = original_color
+
+
+func die(source_position: Vector2):
+    vision_cone.queue_free()
+    z_index += 10
+    var x = randf_range(0, -100 if source_position.x > position.x else 100)
+    velocity = Vector2(x, -200)
+    dying_rotation = deg_to_rad(-10) if x < 0 else deg_to_rad(10)
+    collision_layer = 0
+    collision_mask = 0
+    is_dying = true
+    animation_player.play("RESET")
