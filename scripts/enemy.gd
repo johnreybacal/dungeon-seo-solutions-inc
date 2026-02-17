@@ -14,12 +14,13 @@ var move_speed: float = 50
 var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
+var target_in_sight: bool
 
 var patrol_rotation = deg_to_rad(30)
-var alert_rotation = deg_to_rad(-270)
 
 func _ready() -> void:
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
+    patrol_rotation *= 1 if randi_range(0, 1) == 1 else -1
 
     # https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_2d.html
     # These values need to be adjusted for the actor's speed
@@ -41,7 +42,7 @@ func set_movement_target(movement_target: Vector2):
     navigation_agent.target_position = movement_target
 
 func _physics_process(delta: float) -> void:
-    if target:
+    if target_in_sight:
         vision_cone.look_at(target.position)
         if retarget_timer > 0:
             retarget_timer -= delta
@@ -51,8 +52,9 @@ func _physics_process(delta: float) -> void:
     else:
         if return_timer > 0:
             return_timer -= delta
-            vision_cone.rotate(alert_rotation * delta)
+            vision_cone.look_at(target.position)
             if return_timer <= 0:
+                target = null
                 set_movement_target(original_position)
         else:
             vision_cone.rotate(patrol_rotation * delta)
@@ -71,6 +73,7 @@ func _physics_process(delta: float) -> void:
 func _on_vision_cone_area_body_entered(body: Node2D) -> void:
     if body is Player:
         target = body
+        target_in_sight = true
         body.add_chaser(self )
         set_movement_target(body.position)
         vision_renderer.color = alert_color
@@ -79,6 +82,6 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
     if body is Player:
         set_movement_target(body.position)
         body.remove_chaser(self )
-        target = null
+        target_in_sight = false
         return_timer = 3
         vision_renderer.color = original_color
