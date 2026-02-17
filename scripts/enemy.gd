@@ -13,30 +13,31 @@ class_name Enemy
 @onready var weapon: Node2D = $Sprite2D/Weapon
 @onready var weapon_sprite: Sprite2D = $Sprite2D/Weapon/Sprite2D
 @onready var weapon_animation_player: AnimationPlayer = $Sprite2D/Weapon/Sprite2D/AnimationPlayer
+@onready var attack_area_collider: CollisionShape2D = $AttackArea/CollisionShape2D
 
 @onready var hit_sfx: AudioStreamPlayer = $SFX/Hit
 
 var move_speed: float = 80
+
 var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
-var target_in_sight: bool
-var is_attacking: bool
+var target_in_sight: bool = false
+
+var is_attacking: bool = false
 
 var patrol_rotation = deg_to_rad(30)
 
 var is_dying := false
 var dying_rotation: float
 
+var rad_360 = deg_to_rad(360)
+
+
 func _ready() -> void:
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
     patrol_rotation *= 1 if randi_range(0, 1) == 1 else -1
-
-    # https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_2d.html
-    # These values need to be adjusted for the actor's speed
-    # and the navigation layout.
-    navigation_agent.path_desired_distance = 4.0
-    navigation_agent.target_desired_distance = 4.0
+    _set_attack_area_collider_disabled(true)
 
     # Make sure to not await during _ready.
     actor_setup.call_deferred()
@@ -63,9 +64,9 @@ func _physics_process(delta: float) -> void:
     if target_in_sight:
         vision_cone.look_at(target.position)
         if is_attacking:
-            weapon.rotate(patrol_rotation / 2)
+            weapon.rotate(rad_360 * delta)
         else:
-            weapon.rotation = vision_cone.rotation + deg_to_rad(360)
+            weapon.rotation = vision_cone.rotation + rad_360
         if retarget_timer > 0:
             retarget_timer -= delta
             if retarget_timer <= 0:
@@ -101,8 +102,8 @@ func _on_vision_cone_area_body_entered(body: Node2D) -> void:
         body.add_chaser(self )
         set_movement_target(body.position)
         vision_renderer.color = alert_color
-
         weapon_animation_player.play("draw")
+        _set_attack_area_collider_disabled.call_deferred(false)
 
 func _on_vision_cone_area_body_exited(body: Node2D) -> void:
     if body is Player:
@@ -111,9 +112,10 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
         target_in_sight = false
         return_timer = 5
         vision_renderer.color = original_color
-
         weapon_animation_player.play("RESET")
         weapon.rotation = 0
+        is_attacking = false
+        _set_attack_area_collider_disabled.call_deferred(true)
 
 
 func die(source_position: Vector2):
@@ -127,17 +129,16 @@ func die(source_position: Vector2):
     is_dying = true
     animation_player.play("RESET")
 
-
-func _on_attack_area_body_exited(body: Node2D) -> void:
-    if body is Player:
-        is_attacking = false
-
 func _on_attack_area_body_entered(body: Node2D) -> void:
-    if body is Player:
+    if body is Player and target_in_sight:
         is_attacking = true
-
+        if target_in_sight:
+            BulletTimeManager.start_bullet_time()
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
-    if body is Player:
+    if body is Player and target_in_sight:
         body.die(position)
         hit_sfx.play()
+
+func _set_attack_area_collider_disabled(disabled: bool):
+    attack_area_collider.disabled = disabled

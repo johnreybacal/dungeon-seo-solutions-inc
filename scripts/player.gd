@@ -92,6 +92,7 @@ func _on_trigger_area_body_entered(_body: Node2D) -> void:
     triggered.emit()
 
 func die(source_position: Vector2):
+    BulletTimeManager.stop_bullet_time()
     z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)

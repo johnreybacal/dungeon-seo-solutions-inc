@@ -10,7 +10,6 @@ var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 
 var traps: Array[Vector2i] = []
 var trap_cooldowns: Dictionary[Vector2i, float]
-var bullet_timer: float = 0
 
 var audio_pitch_shift: AudioEffectPitchShift
 
@@ -26,8 +25,10 @@ func _ready() -> void:
     MapManager.map_updated.connect(_redraw_map_guide)
     _redraw_map_guide()
 
+    BulletTimeManager.on_bullet_time_end.connect(hud.show)
+
 func _input(event: InputEvent) -> void:
-    if event.is_action_pressed("toggle_map") and bullet_timer <= 0 and not player.is_dying:
+    if event.is_action_pressed("toggle_map") and not BulletTimeManager.is_bullet_time() and not player.is_dying:
         hud.toggle_map()
 
 
@@ -42,15 +43,8 @@ func _physics_process(delta: float) -> void:
         var coords := dungeon_tile_map.local_to_map(player.position)
         hud.set_player_coordinates(coords)
 
-    if bullet_timer > 0:
-        Engine.time_scale = 0.05
-        audio_pitch_shift.pitch_scale = 0.05
-        bullet_timer -= delta
+    if BulletTimeManager.is_bullet_time():
         camera.zoom = camera.zoom.move_toward(Vector2(8, 8), delta * 100)
-        if bullet_timer <= 0:
-            Engine.time_scale = 1
-            audio_pitch_shift.pitch_scale = 1
-            hud.show()
     else:
         camera.zoom = camera.zoom.move_toward(Vector2(4, 4), delta * 10)
 
@@ -129,7 +123,7 @@ func _on_tile_triggered():
         anvil.position = trap_position
         anvil.player_hit.connect(_on_player_hit)
         add_child.call_deferred(anvil)
-        bullet_timer = .1
+        BulletTimeManager.start_bullet_time()
         hud.hide_hud()
 
 func _on_player_hit(source_position: Vector2):
