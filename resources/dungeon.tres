@@ -1,35 +1,17 @@
-[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://xgc2ng4pshoi"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://xgc2ng4pshoi"]
 
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_wki70"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_wki70"]
-vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+vertices = PackedVector2Array(8, -3.203125, 8, 3.203125, 3.203125, 8, -3.203125, 8, -8, 3.203125, -8, -3.203125, -3.203125, -8, 3.203125, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-3.1999998, -8, 3.1999998, -8, 8, -3.1999998, 8, 3.1999998, 3.1999998, 8, -3.1999998, 8, -8, 3.1999998, -8, -3.1999998)])
 agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_fxoed"]
-vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
-agent_radius = 0.0
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_5tpk0"]
-vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
-agent_radius = 0.0
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_tpdtj"]
-vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
-agent_radius = 0.0
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_auuau"]
-vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+vertices = PackedVector2Array(8, -3.203125, 8, 3.203125, 3.203125, 8, -3.203125, 8, -8, 3.203125, -8, -3.203125, -3.203125, -8, 3.203125, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-3.1999998, -8, 3.1999998, -8, 8, -3.1999998, 8, 3.1999998, 3.1999998, 8, -3.1999998, 8, -8, 3.1999998, -8, -3.1999998)])
 agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fxoed"]
@@ -251,7 +233,7 @@ texture = ExtResource("1_wki70")
 6:3/0/terrains_peering_bit/top_left_corner = 1
 6:3/0/terrains_peering_bit/top_side = 1
 6:3/0/terrains_peering_bit/top_right_corner = 1
-6:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_auuau")
+6:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fxoed")
 7:3/0 = 0
 8:3/0 = 0
 9:3/0 = 0
@@ -286,7 +268,7 @@ texture = ExtResource("1_wki70")
 1:4/0/terrains_peering_bit/top_left_corner = 1
 1:4/0/terrains_peering_bit/top_side = 1
 1:4/0/terrains_peering_bit/top_right_corner = 1
-1:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fxoed")
+1:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_wki70")
 2:4/next_alternative_id = 3
 2:4/0 = 0
 2:4/0/terrain_set = 0
@@ -297,7 +279,7 @@ texture = ExtResource("1_wki70")
 2:4/0/terrains_peering_bit/bottom_side = 1
 2:4/0/terrains_peering_bit/bottom_left_corner = 1
 2:4/0/terrains_peering_bit/left_side = 1
-2:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_5tpk0")
+2:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_wki70")
 3:4/0 = 0
 3:4/0/terrain_set = 0
 3:4/0/terrain = 1
@@ -307,7 +289,7 @@ texture = ExtResource("1_wki70")
 3:4/0/terrains_peering_bit/bottom_side = 1
 3:4/0/terrains_peering_bit/bottom_left_corner = 1
 3:4/0/terrains_peering_bit/left_side = 1
-3:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_tpdtj")
+3:4/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_wki70")
 4:4/next_alternative_id = 4
 4:4/0 = 0
 4:4/0/terrain_set = 0

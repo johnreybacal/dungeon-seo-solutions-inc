@@ -180,6 +180,7 @@ radius = 6.0
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("vision_renderer")]
 collision_layer = 8
 collision_mask = 5
+motion_mode = 1
 script = ExtResource("1_5uy6h")
 vision_renderer = NodePath("VisionCone/VisionCone2D/VisionConeRenderer")
 alert_color = Color(1, 0, 0, 0.39215687)
@@ -217,6 +218,7 @@ collision_layer_mask = 5
 collision_mask = 4
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
 
 [connection signal="body_entered" from="VisionCone/VisionCone2D/VisionConeArea" to="." method="_on_vision_cone_area_body_entered"]
 [connection signal="body_exited" from="VisionCone/VisionCone2D/VisionConeArea" to="." method="_on_vision_cone_area_body_exited"]
