@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsdf5hsph7obg"]
+[gd_scene load_steps=11 format=3 uid="uid://dsdf5hsph7obg"]
 
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://coxfdn52kikch" path="res://scripts/player.gd" id="1_g2els"]
@@ -244,9 +244,13 @@ tracks/7/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_qlg0r"]
+resource_name = "dash"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dqkch"]
 _data = {
 &"RESET": SubResource("Animation_qhqgy"),
+&"dash": SubResource("Animation_qlg0r"),
 &"hide": SubResource("Animation_dqkch"),
 &"walk": SubResource("Animation_g2els")
 }

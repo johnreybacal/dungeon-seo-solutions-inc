@@ -7,6 +7,7 @@ var move_speed: float = 100
 var dash_direction: Vector2
 var dash_duration: float = 0
 var dash_cooldown: float = 0
+var dash_skew = deg_to_rad(30)
 var is_dashing := false
 
 
@@ -33,9 +34,12 @@ func _physics_process(delta: float) -> void:
         # Maybe use skew for diagonal direction?
         var scale_x = abs(dash_direction.x) + .5
         var scale_y = abs(dash_direction.y) + .5
-        scale = scale.move_toward(Vector2(scale_x, scale_y), delta * 5)
+        if dash_direction.x != 0:
+            sprite_2d.skew = move_toward(sprite_2d.skew, dash_skew * sign(dash_direction.x), delta * 3)
+        sprite_2d.scale = sprite_2d.scale.move_toward(Vector2(scale_x, scale_y), delta * 3)
         if dash_duration <= 0:
-            scale = Vector2.ONE
+            sprite_2d.skew = 0
+            sprite_2d.scale = Vector2.ONE
             is_dashing = false
     if dash_cooldown > 0:
         dash_cooldown -= delta
@@ -53,7 +57,7 @@ func _handle_input():
     if Input.is_action_just_pressed("dash") and dash_cooldown <= 0:
         is_dashing = true
         dash_direction = last_direction
-        dash_duration = .1
+        dash_duration = .15
         dash_cooldown = .5
         
     if is_dashing:
@@ -74,11 +78,13 @@ func _handle_animation():
             animation_player.play("RESET")
         elif not is_hidden:
             animation_player.play("hide")
-
     else:
         collision_layer = 7
         is_hidden = false
-        animation_player.play("walk")
+        if is_dashing:
+            animation_player.play("dash")
+        else:
+            animation_player.play("walk")
 
 func _on_trigger_area_body_entered(_body: Node2D) -> void:
     if is_dying:
