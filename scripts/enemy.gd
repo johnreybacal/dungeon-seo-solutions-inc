@@ -10,11 +10,18 @@ class_name Enemy
 @onready var original_position = position
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 
+@onready var weapon: Node2D = $Sprite2D/Weapon
+@onready var weapon_sprite: Sprite2D = $Sprite2D/Weapon/Sprite2D
+@onready var weapon_animation_player: AnimationPlayer = $Sprite2D/Weapon/Sprite2D/AnimationPlayer
+
+@onready var hit_sfx: AudioStreamPlayer = $SFX/Hit
+
 var move_speed: float = 80
 var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
 var target_in_sight: bool
+var is_attacking: bool
 
 var patrol_rotation = deg_to_rad(30)
 
@@ -55,6 +62,10 @@ func _physics_process(delta: float) -> void:
 
     if target_in_sight:
         vision_cone.look_at(target.position)
+        if is_attacking:
+            weapon.rotate(patrol_rotation / 2)
+        else:
+            weapon.rotation = vision_cone.rotation + deg_to_rad(360)
         if retarget_timer > 0:
             retarget_timer -= delta
             if retarget_timer <= 0:
@@ -91,6 +102,8 @@ func _on_vision_cone_area_body_entered(body: Node2D) -> void:
         set_movement_target(body.position)
         vision_renderer.color = alert_color
 
+        weapon_animation_player.play("draw")
+
 func _on_vision_cone_area_body_exited(body: Node2D) -> void:
     if body is Player:
         set_movement_target(body.position)
@@ -98,6 +111,9 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
         target_in_sight = false
         return_timer = 5
         vision_renderer.color = original_color
+
+        weapon_animation_player.play("RESET")
+        weapon.rotation = 0
 
 
 func die(source_position: Vector2):
@@ -110,3 +126,18 @@ func die(source_position: Vector2):
     collision_mask = 0
     is_dying = true
     animation_player.play("RESET")
+
+
+func _on_attack_area_body_exited(body: Node2D) -> void:
+    if body is Player:
+        is_attacking = false
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+    if body is Player:
+        is_attacking = true
+
+
+func _on_attack_hit_area_body_entered(body: Node2D) -> void:
+    if body is Player:
+        body.die(position)
+        hit_sfx.play()
