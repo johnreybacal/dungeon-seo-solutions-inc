@@ -1,7 +1,15 @@
 extends CharacterBody2D
 class_name Player
 
+var last_direction: Vector2 = Vector2.RIGHT
 var move_speed: float = 100
+
+var dash_direction: Vector2
+var dash_duration: float = 0
+var dash_cooldown: float = 0
+var is_dashing := false
+
+
 var is_dying := false
 var dying_rotation: float
 @onready var sprite_2d: Sprite2D = $Sprite2D
@@ -20,6 +28,18 @@ func _physics_process(delta: float) -> void:
         move_and_slide()
         return
 
+    if dash_duration > 0:
+        dash_duration -= delta
+        # Maybe use skew for diagonal direction?
+        var scale_x = abs(dash_direction.x) + .5
+        var scale_y = abs(dash_direction.y) + .5
+        scale = scale.move_toward(Vector2(scale_x, scale_y), delta * 5)
+        if dash_duration <= 0:
+            scale = Vector2.ONE
+            is_dashing = false
+    if dash_cooldown > 0:
+        dash_cooldown -= delta
+
     _handle_input()
     _handle_animation()
 
@@ -27,8 +47,19 @@ func _physics_process(delta: float) -> void:
 func _handle_input():
     var move_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
-    velocity = move_vector.normalized() * move_speed
+    if move_vector != Vector2.ZERO:
+        last_direction = move_vector
 
+    if Input.is_action_just_pressed("dash") and dash_cooldown <= 0:
+        is_dashing = true
+        dash_direction = last_direction
+        dash_duration = .1
+        dash_cooldown = .5
+        
+    if is_dashing:
+        velocity = dash_direction.normalized() * move_speed * 2.5
+    else:
+        velocity = move_vector.normalized() * move_speed
     move_and_slide()
 
 func _handle_animation():
