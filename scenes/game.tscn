@@ -9,6 +9,7 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
+enemy_scene = ExtResource("6_p57ef")
 
 [node name="DungeonTileMap" type="TileMapLayer" parent="."]
 position = Vector2(-16, -16)
@@ -33,6 +34,3 @@ limit_bottom = 360
 position = Vector2(91, 58)
 
 [node name="HUD" parent="." instance=ExtResource("4_lbhrr")]
-
-[node name="Enemy" parent="." instance=ExtResource("6_p57ef")]
-position = Vector2(99, 267)

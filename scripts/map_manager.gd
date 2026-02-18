@@ -4,18 +4,37 @@ var map: Array
 var player_map: Array
 var player_map_initial: Array
 
+var player_position: Vector2i
+var enemy_positions: Array[Vector2i]
+
+# 0 ground
+# 1 wall
+# 2 top wall
+# 3 trap - anvil
+# 8 enemy
+# 9 player
+
 signal map_updated(coords: Vector2i, value: int)
 signal map_ready()
 
 func generate_map():
+    enemy_positions = []
     map = MapData.tutorial.duplicate_deep()
     player_map = MapData.tutorial.duplicate_deep()
     player_map_initial = MapData.tutorial.duplicate_deep()
     for y in range(len(player_map)):
         for x in range(len(player_map[y])):
-            if player_map[y][x] == 2:
+            var cell = player_map[y][x]
+            if cell == 9:
+                player_position = Vector2i(x - 1, y - 1)
+            if cell == 8:
+                enemy_positions.append(Vector2i(x - 1, y - 1))
+            elif cell == 2:
                 player_map[y][x] = 1
                 player_map_initial[y][x] = 1
+            elif cell not in [0, 1, 2]:
+                player_map[y][x] = 0
+                player_map_initial[y][x] = 0
 
     map_ready.emit()
     # # Walker generator

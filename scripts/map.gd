@@ -21,7 +21,7 @@ var cell_coords = {
 var is_mouse_down = false
 
 var min_y = 2
-var max_y = 20
+var max_y = 21
 var min_x = 0
 var max_x = 40
 
@@ -48,12 +48,12 @@ func _setup_map():
             x += 1
         y += 1
 
-    for i in range(-1, 23):
+    for i in range(-1, 24):
         tile_map_layer.set_cell(Vector2i(-1, i), 0, Vector2(-1, -1))
         tile_map_layer.set_cell(Vector2i(42, i), 0, Vector2(-1, -1))
     for i in range(-1, 42):
         tile_map_layer.set_cell(Vector2i(i, -1), 0, Vector2(-1, -1))
-        tile_map_layer.set_cell(Vector2i(i, 23), 0, Vector2(-1, -1))
+        tile_map_layer.set_cell(Vector2i(i, 24), 0, Vector2(-1, -1))
 
 func _input(event: InputEvent) -> void:
     if event.is_action_pressed("use_ground"):
