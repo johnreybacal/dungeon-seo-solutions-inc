@@ -52,6 +52,10 @@ func actor_setup():
     set_movement_target(original_position)
 
 func set_movement_target(movement_target: Vector2):
+    if movement_target == original_position:
+        navigation_agent.target_desired_distance = 2
+    else:
+        navigation_agent.target_desired_distance = 10
     navigation_agent.target_position = movement_target
 
 func _physics_process(delta: float) -> void:
@@ -85,8 +89,10 @@ func _physics_process(delta: float) -> void:
                 weapon.rotation = 0
                 target = null
                 set_movement_target(original_position)
-        else:
+        elif position.distance_to(original_position) < 5:
             vision_cone.rotate(patrol_rotation * delta)
+        else:
+            vision_cone.rotation = lerp(vision_cone.rotation, velocity.angle(), .1)
 
     if navigation_agent.is_navigation_finished() or attack_duration > 0:
         animation_player.play("RESET")
