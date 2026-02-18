@@ -31,7 +31,6 @@ func _physics_process(delta: float) -> void:
 
     if dash_duration > 0:
         dash_duration -= delta
-        # Maybe use skew for diagonal direction?
         var scale_x = abs(dash_direction.x) + .5
         var scale_y = abs(dash_direction.y) + .5
         if dash_direction.x != 0:
