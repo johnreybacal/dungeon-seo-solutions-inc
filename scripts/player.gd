@@ -10,6 +10,8 @@ var dash_cooldown: float = 0
 var dash_skew = deg_to_rad(30)
 var is_dashing := false
 
+var knock_back_duration: float = 0
+var knock_back_direction: Vector2
 
 var is_dying := false
 var dying_rotation: float
@@ -20,7 +22,13 @@ var chasers: Array[int]
 var vanish_timer = 0
 var is_hidden = false
 
+var max_hp: int = 3
+var hp: int
+
 signal triggered()
+
+func _ready() -> void:
+    hp = max_hp
 
 func _physics_process(delta: float) -> void:
     if is_dying:
@@ -28,6 +36,11 @@ func _physics_process(delta: float) -> void:
         rotate(dying_rotation * delta)
         move_and_slide()
         return
+    
+    if knock_back_duration > 0:
+        knock_back_duration -= delta
+        if knock_back_duration <= 0:
+            modulate = Color.WHITE
 
     if dash_duration > 0:
         dash_duration -= delta
@@ -48,6 +61,11 @@ func _physics_process(delta: float) -> void:
 
 
 func _handle_input():
+    if knock_back_duration > 0:
+        velocity = knock_back_direction.normalized() * move_speed * 2
+        move_and_slide()
+        return
+
     var move_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
     if move_vector != Vector2.ZERO:
@@ -66,6 +84,11 @@ func _handle_input():
     move_and_slide()
 
 func _handle_animation():
+    if knock_back_duration > 0:
+        modulate = Color.ORANGE_RED
+        animation_player.play("RESET")
+        return
+
     if velocity.x > 0:
         sprite_2d.flip_h = false
     elif velocity.x < 0:
@@ -80,6 +103,7 @@ func _handle_animation():
     else:
         collision_layer = 7
         is_hidden = false
+
         if is_dashing:
             animation_player.play("dash")
         else:
@@ -89,6 +113,15 @@ func _on_trigger_area_body_entered(_body: Node2D) -> void:
     if is_dying:
         return
     triggered.emit()
+
+func hit(source_position: Vector2):
+    hp -= 1
+    if hp <= 0:
+        die(source_position)
+        return
+    BulletTimeManager.stop_bullet_time()
+    knock_back_duration = .2
+    knock_back_direction = source_position.direction_to(position)
 
 func die(source_position: Vector2):
     BulletTimeManager.stop_bullet_time(false)
@@ -104,7 +137,6 @@ func die(source_position: Vector2):
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
     if anim_name == "hide":
-        print("hidden")
         is_hidden = true
         collision_layer = 0
 

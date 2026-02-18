@@ -144,7 +144,7 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
     if body is Player:
-        body.die(position)
+        body.hit(position)
         hit_sfx.play()
 
 func _set_attack_area_collider_disabled(disabled: bool):

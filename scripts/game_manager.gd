@@ -127,5 +127,4 @@ func _on_tile_triggered():
         hud.hide_hud()
 
 func _on_player_hit(source_position: Vector2):
-    print("player hit")
-    player.die(source_position)
+    player.hit(source_position)
