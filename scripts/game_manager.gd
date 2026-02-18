@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var dungeon_tile_map: TileMapLayer = $NavigationRegion2D/DungeonTileMap
+@onready var dungeon_tile_map: TileMapLayer = $DungeonTileMap
 @onready var map_guide_tile_map: TileMapLayer = $MapGuideTileMap
 @onready var player: Player = $Player
 @onready var camera: Camera2D = $Camera2D

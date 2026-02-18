@@ -81,6 +81,7 @@ func _physics_process(delta: float) -> void:
             return_timer -= delta
             vision_cone.look_at(target.position)
             if return_timer <= 0:
+                weapon.rotation = 0
                 target = null
                 set_movement_target(original_position)
         else:
@@ -116,8 +117,7 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
         target_in_sight = false
         return_timer = 5
         vision_renderer.color = original_color
-        weapon_animation_player.play("RESET")
-        weapon.rotation = 0
+        weapon_animation_player.play("sheathe")
         attack_duration = 0
         _set_attack_area_collider_disabled.call_deferred(true)
 
