@@ -25,7 +25,7 @@ signal triggered()
 func _physics_process(delta: float) -> void:
     if is_dying:
         velocity += get_gravity() * (delta / 2)
-        rotate(dying_rotation)
+        rotate(dying_rotation * delta)
         move_and_slide()
         return
 
@@ -57,11 +57,11 @@ func _handle_input():
     if Input.is_action_just_pressed("dash") and dash_cooldown <= 0:
         is_dashing = true
         dash_direction = last_direction
-        dash_duration = .15
+        dash_duration = .2
         dash_cooldown = .5
         
     if is_dashing:
-        velocity = dash_direction.normalized() * move_speed * 2.5
+        velocity = dash_direction.normalized() * move_speed * 3
     else:
         velocity = move_vector.normalized() * move_speed
     move_and_slide()
@@ -92,11 +92,11 @@ func _on_trigger_area_body_entered(_body: Node2D) -> void:
     triggered.emit()
 
 func die(source_position: Vector2):
-    BulletTimeManager.stop_bullet_time()
+    BulletTimeManager.stop_bullet_time(false)
     z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)
-    dying_rotation = deg_to_rad(-10) if x < 0 else deg_to_rad(10)
+    dying_rotation = deg_to_rad(-720) if x < 0 else deg_to_rad(720)
     collision_layer = 0
     collision_mask = 0
     is_dying = true

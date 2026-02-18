@@ -13,18 +13,18 @@ class_name Enemy
 @onready var weapon: Node2D = $Sprite2D/Weapon
 @onready var weapon_sprite: Sprite2D = $Sprite2D/Weapon/Sprite2D
 @onready var weapon_animation_player: AnimationPlayer = $Sprite2D/Weapon/Sprite2D/AnimationPlayer
-@onready var attack_area_collider: CollisionShape2D = $AttackArea/CollisionShape2D
 
 @onready var hit_sfx: AudioStreamPlayer = $SFX/Hit
 
-var move_speed: float = 80
+var move_speed: float = 100
 
 var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
 var target_in_sight: bool = false
 
-var is_attacking: bool = false
+var attack_duration: float
+var attack_direction: int
 
 var patrol_rotation = deg_to_rad(30)
 
@@ -38,6 +38,7 @@ func _ready() -> void:
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
     patrol_rotation *= 1 if randi_range(0, 1) == 1 else -1
     _set_attack_area_collider_disabled(true)
+    _set_attack_hit_area_collider_disabled.call_deferred(true)
 
     # Make sure to not await during _ready.
     actor_setup.call_deferred()
@@ -55,7 +56,7 @@ func set_movement_target(movement_target: Vector2):
 func _physics_process(delta: float) -> void:
     if is_dying:
         velocity += get_gravity() * (delta / 2)
-        rotate(dying_rotation)
+        rotate(dying_rotation * delta)
         move_and_slide()
         if position.y > 500:
             queue_free()
@@ -63,14 +64,17 @@ func _physics_process(delta: float) -> void:
 
     if target_in_sight:
         vision_cone.look_at(target.position)
-        if is_attacking:
-            weapon.rotate(rad_360 * delta)
+        if attack_duration > 0:
+            weapon.rotate(rad_360 * delta * attack_direction * 5)
+            attack_duration -= delta
+            if attack_duration <= 0:
+                _set_attack_hit_area_collider_disabled.call_deferred(true)
         else:
             weapon.rotation = vision_cone.rotation + rad_360
         if retarget_timer > 0:
             retarget_timer -= delta
             if retarget_timer <= 0:
-                retarget_timer = .25
+                retarget_timer = .1
                 set_movement_target(target.position)
     else:
         if return_timer > 0:
@@ -82,7 +86,7 @@ func _physics_process(delta: float) -> void:
         else:
             vision_cone.rotate(patrol_rotation * delta)
 
-    if navigation_agent.is_navigation_finished():
+    if navigation_agent.is_navigation_finished() or attack_duration > 0:
         animation_player.play("RESET")
         return
 
@@ -114,7 +118,7 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
         vision_renderer.color = original_color
         weapon_animation_player.play("RESET")
         weapon.rotation = 0
-        is_attacking = false
+        attack_duration = 0
         _set_attack_area_collider_disabled.call_deferred(true)
 
 
@@ -123,22 +127,28 @@ func die(source_position: Vector2):
     z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)
-    dying_rotation = deg_to_rad(-10) if x < 0 else deg_to_rad(10)
+    dying_rotation = deg_to_rad(-720) if x < 0 else deg_to_rad(720)
     collision_layer = 0
     collision_mask = 0
     is_dying = true
     animation_player.play("RESET")
+    _set_attack_area_collider_disabled.call_deferred(true)
+    _set_attack_hit_area_collider_disabled.call_deferred(true)
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
-    if body is Player and target_in_sight:
-        is_attacking = true
-        if target_in_sight:
-            BulletTimeManager.start_bullet_time()
+    if body is Player:
+        _set_attack_hit_area_collider_disabled.call_deferred(false)
+        attack_direction = 1 if position.x < target.position.x else -1
+        attack_duration = .2
+        BulletTimeManager.start_bullet_time()
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
-    if body is Player and target_in_sight:
+    if body is Player:
         body.die(position)
         hit_sfx.play()
 
 func _set_attack_area_collider_disabled(disabled: bool):
-    attack_area_collider.disabled = disabled
+    $AttackArea/CollisionShape2D.disabled = disabled
+
+func _set_attack_hit_area_collider_disabled(disabled: bool):
+    $Sprite2D/Weapon/Sprite2D/AttackHitArea/CollisionShape2D.disabled = disabled
