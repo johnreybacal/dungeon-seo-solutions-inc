@@ -11,16 +11,15 @@ var anvil_trap := preload("res://scenes/anvil_trap.tscn")
 var traps: Array[Vector2i] = []
 var trap_cooldowns: Dictionary[Vector2i, float]
 
-var audio_pitch_shift: AudioEffectPitchShift
-
 var vertical_points: PackedVector2Array;
 var horizontal_points: PackedVector2Array;
 
 func _ready() -> void:
     MapManager.generate_map()
     _draw_dungeon()
+
     player.triggered.connect(_on_tile_triggered)
-    audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("Master"), 0)
+    
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
     MapManager.map_updated.connect(_update_map_guide)

@@ -227,7 +227,7 @@ autoplay = "fall"
 stream = ExtResource("3_sjmsj")
 volume_db = -5.0
 autoplay = true
-bus = &"SFX"
+bus = &"SFX Slowable"
 
 [node name="Hit" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("4_sjmsj")

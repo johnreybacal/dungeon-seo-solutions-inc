@@ -72,6 +72,7 @@ func _handle_input():
         last_direction = move_vector
 
     if Input.is_action_just_pressed("dash") and dash_cooldown <= 0:
+        $SFX/Dash.play()
         is_dashing = true
         dash_direction = last_direction
         dash_duration = .2

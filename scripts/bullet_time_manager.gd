@@ -7,7 +7,7 @@ var is_player_alive := true
 signal on_bullet_time_end()
 
 func _ready() -> void:
-    audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("Master"), 0)
+    audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("SFX Slowable"), 0)
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _process(delta: float) -> void:

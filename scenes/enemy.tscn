@@ -327,10 +327,11 @@ shape = SubResource("CircleShape2D_5uy6h")
 
 [node name="Walk" type="AudioStreamPlayer" parent="SFX"]
 volume_db = -15.0
-bus = &"SFX"
+bus = &"SFX Slowable"
 
 [node name="Hit" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("4_c4w8v")
+bus = &"SFX"
 
 [node name="Swing" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("5_xwavj")
