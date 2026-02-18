@@ -76,11 +76,11 @@ func _input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
         if is_mouse_down:
             _draw_cell()
-        var coords := tile_map_layer.local_to_map(get_local_mouse_position() - tile_map_layer.position)
+        var coords := tile_map_layer.local_to_map(get_local_mouse_position())
         var x = coords.x # - 1
         var y = coords.y # - 1
         if x >= min_x and x <= max_x and y >= min_y and y <= max_y:
-            coordinates_label.text = str(coords.x - 1) + ", " + str(coords.y - 1)
+            coordinates_label.text = str(coords.x) + ", " + str(coords.y)
             coordinates_label.visible = true
         else:
             coordinates_label.visible = false
@@ -92,7 +92,7 @@ func _reset_hint_position():
 
 
 func _draw_cell():
-    var coords := tile_map_layer.local_to_map(get_local_mouse_position() - tile_map_layer.position)
+    var coords := tile_map_layer.local_to_map(get_local_mouse_position())
     var x = coords.x
     var y = coords.y
 

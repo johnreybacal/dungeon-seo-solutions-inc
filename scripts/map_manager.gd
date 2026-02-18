@@ -26,9 +26,9 @@ func generate_map():
         for x in range(len(player_map[y])):
             var cell = player_map[y][x]
             if cell == 9:
-                player_position = Vector2i(x - 1, y - 1)
+                player_position = Vector2i(x, y)
             if cell == 8:
-                enemy_positions.append(Vector2i(x - 1, y - 1))
+                enemy_positions.append(Vector2i(x, y))
             elif cell == 2:
                 player_map[y][x] = 1
                 player_map_initial[y][x] = 1

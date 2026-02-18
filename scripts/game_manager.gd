@@ -69,9 +69,8 @@ func _draw_dungeon():
             if cell == 2:
                 wall_coordinates.append(coords)
             if cell == 3:
-                var adjusted_coords = Vector2i(coords.x - 1, coords.y - 1)
-                traps.append(adjusted_coords)
-                trap_cooldowns[adjusted_coords] = 0
+                traps.append(coords)
+                trap_cooldowns[coords] = 0
             x += 1
         y += 1
     
