@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cwgaun7va8agv" path="res://scripts/anvil_trap.gd" id="1_1jrl2"]
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_1ly65"]
-[ext_resource type="AudioStream" uid="uid://dacoy8tl2yg4d" path="res://assets/sfx/fall.mp3" id="3_jmml4"]
+[ext_resource type="AudioStream" uid="uid://btdmus7ibgqjk" path="res://assets/sfx/fall-a.ogg" id="3_sjmsj"]
 [ext_resource type="AudioStream" uid="uid://b7l8vmpjgwp5f" path="res://assets/sfx/hurt.ogg" id="4_sjmsj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ly65"]
@@ -224,8 +224,8 @@ autoplay = "fall"
 [node name="SFX" type="Node2D" parent="."]
 
 [node name="Fall" type="AudioStreamPlayer" parent="SFX"]
-stream = ExtResource("3_jmml4")
-pitch_scale = 1.75
+stream = ExtResource("3_sjmsj")
+volume_db = -5.0
 autoplay = true
 bus = &"SFX"
 

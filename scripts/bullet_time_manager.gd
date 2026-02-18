@@ -20,9 +20,9 @@ func _process(delta: float) -> void:
 
 func start_bullet_time():
     if is_player_alive:
-        bullet_timer = .1
-        Engine.time_scale = 0.05
-        audio_pitch_shift.pitch_scale = 0.05
+        bullet_timer = 0.075
+        Engine.time_scale = 0.075
+        audio_pitch_shift.pitch_scale = 0.5
 
 func stop_bullet_time(p_is_player_alive = true):
     bullet_timer = 0

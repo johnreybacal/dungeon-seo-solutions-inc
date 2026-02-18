@@ -15,6 +15,7 @@ class_name Enemy
 @onready var weapon_animation_player: AnimationPlayer = $Sprite2D/Weapon/Sprite2D/AnimationPlayer
 
 @onready var hit_sfx: AudioStreamPlayer = $SFX/Hit
+@onready var swing_sfx: AudioStreamPlayer = $SFX/Swing
 
 var move_speed: float = 100
 
@@ -141,6 +142,7 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
         attack_direction = 1 if position.x < target.position.x else -1
         attack_duration = .2
         BulletTimeManager.start_bullet_time()
+        swing_sfx.play()
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
     if body is Player:

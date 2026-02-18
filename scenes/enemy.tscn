@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://cuhhvtpvqv8yo"]
+[gd_scene load_steps=17 format=3 uid="uid://cuhhvtpvqv8yo"]
 
 [ext_resource type="Script" uid="uid://dpnto6dvajg48" path="res://scripts/enemy.gd" id="1_5uy6h"]
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_md0e3"]
 [ext_resource type="PackedScene" uid="uid://kf8tqdlm8c5t" path="res://addons/vision_cone_2d/vision_cone_2d_template.tscn" id="3_4ra3w"]
 [ext_resource type="AudioStream" uid="uid://djqcr2hahuvmm" path="res://assets/sfx/move-a.ogg" id="3_5uy6h"]
 [ext_resource type="AudioStream" uid="uid://b7l8vmpjgwp5f" path="res://assets/sfx/hurt.ogg" id="4_c4w8v"]
+[ext_resource type="AudioStream" uid="uid://byqd07vdeub20" path="res://assets/sfx/swing.mp3" id="5_xwavj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uy6h"]
 size = Vector2(12, 10)
@@ -272,6 +273,7 @@ _data = {
 radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c4w8v"]
+radius = 16.0
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("vision_renderer")]
 z_index = 1
@@ -329,6 +331,11 @@ bus = &"SFX"
 
 [node name="Hit" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("4_c4w8v")
+
+[node name="Swing" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("5_xwavj")
+volume_db = -5.0
+bus = &"SFX"
 
 [node name="VisionCone" type="Node2D" parent="."]
 
