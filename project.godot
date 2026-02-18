@@ -23,6 +23,7 @@ general/default_playback_type.web=0
 
 MapManager="*res://scripts/map_manager.gd"
 BulletTimeManager="*res://scripts/bullet_time_manager.gd"
+MapData="*res://scripts/map_data.gd"
 
 [display]
 

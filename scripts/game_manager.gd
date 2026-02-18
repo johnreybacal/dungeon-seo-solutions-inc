@@ -17,13 +17,13 @@ var vertical_points: PackedVector2Array;
 var horizontal_points: PackedVector2Array;
 
 func _ready() -> void:
+    MapManager.generate_map()
     _draw_dungeon()
     player.triggered.connect(_on_tile_triggered)
     audio_pitch_shift = AudioServer.get_bus_effect(AudioServer.get_bus_index("Master"), 0)
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-    MapManager.map_updated.connect(_redraw_map_guide)
-    _redraw_map_guide()
+    MapManager.map_updated.connect(_update_map_guide)
 
     BulletTimeManager.on_bullet_time_end.connect(hud.show)
 
@@ -56,7 +56,6 @@ func _draw_dungeon():
     # 2: wall
     # 3: healing well?
     # 4 and beyond: traps
-    MapManager.generate_map()
     var cells = MapManager.map
     print(cells)
     var top_walls_coordinates: Array[Vector2i] = []
@@ -91,24 +90,13 @@ func _draw_dungeon():
 
     print("traps at: ", traps)
 
-func _redraw_map_guide():
-    var cells = MapManager.player_map
-    var y: int = 0
-    for y_cells in cells:
-        var x: int = 0
-        for cell in y_cells:
-            var tile_coords := Vector2i(-1, -1)
-            if cell == 1:
-                tile_coords = Vector2i(1, 0)
-            if cell == 2:
-                tile_coords = Vector2i(2, 0)
-            if cell == 3:
-                tile_coords = Vector2i(0, 0)
-
-            if tile_coords:
-                map_guide_tile_map.set_cell(Vector2i(x, y), 0, tile_coords)
-            x += 1
-        y += 1
+func _update_map_guide(coords: Vector2i, value: int):
+    var tile_coords := Vector2i(-1, -1)
+    if value == 2:
+        tile_coords = Vector2i(2, 0)
+    if value == 1 and MapManager.player_map_initial[coords.y][coords.x] != 1:
+        tile_coords = Vector2i(1, 0)
+    map_guide_tile_map.set_cell(coords, 0, tile_coords)
 
 func _on_tile_triggered():
     var coords := dungeon_tile_map.local_to_map(player.position)
