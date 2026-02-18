@@ -23,7 +23,9 @@ var return_timer = 0
 var retarget_timer = .25
 var target: Node2D
 var target_in_sight: bool = false
+var target_in_range: bool = false
 
+var attack_cooldown: float
 var attack_duration: float
 var attack_direction: int
 
@@ -59,6 +61,7 @@ func set_movement_target(movement_target: Vector2):
     navigation_agent.target_position = movement_target
 
 func _physics_process(delta: float) -> void:
+    # Dying
     if is_dying:
         velocity += get_gravity() * (delta / 2)
         rotate(dying_rotation * delta)
@@ -67,31 +70,52 @@ func _physics_process(delta: float) -> void:
             queue_free()
         return
 
+    if attack_duration > 0:
+        # Is attacking
+        weapon.rotate(rad_360 * delta * attack_direction * 5)
+        attack_duration -= delta
+        if attack_duration <= 0:
+            _set_attack_hit_area_collider_disabled.call_deferred(true)
+    else:
+        weapon.rotation = vision_cone.rotation + rad_360
+
+    if attack_cooldown > 0:
+        # Attack cooldown
+        attack_cooldown -= delta
+    elif target_in_range:
+        # Can attack
+        _set_attack_hit_area_collider_disabled.call_deferred(false)
+        attack_direction = 1 if position.x < target.position.x else -1
+        attack_duration = .2
+        attack_cooldown = 1
+        BulletTimeManager.start_bullet_time()
+        swing_sfx.play()
+
     if target_in_sight:
+        # Look at player
         vision_cone.look_at(target.position)
-        if attack_duration > 0:
-            weapon.rotate(rad_360 * delta * attack_direction * 5)
-            attack_duration -= delta
-            if attack_duration <= 0:
-                _set_attack_hit_area_collider_disabled.call_deferred(true)
-        else:
-            weapon.rotation = vision_cone.rotation + rad_360
         if retarget_timer > 0:
+            # Update navigation
             retarget_timer -= delta
             if retarget_timer <= 0:
                 retarget_timer = .1
                 set_movement_target(target.position)
     else:
+        # Lost sight of target
         if return_timer > 0:
             return_timer -= delta
+            # Keep looking at target
             vision_cone.look_at(target.position)
             if return_timer <= 0:
                 weapon.rotation = 0
                 target = null
+                # Go back to original position
                 set_movement_target(original_position)
         elif position.distance_to(original_position) < 5:
+            # patrol vision cone
             vision_cone.rotate(patrol_rotation * delta)
         else:
+            # going back to original position, look where its going
             vision_cone.rotation = lerp(vision_cone.rotation, velocity.angle(), .1)
 
     if navigation_agent.is_navigation_finished() or attack_duration > 0:
@@ -144,11 +168,11 @@ func die(source_position: Vector2):
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
     if body is Player:
-        _set_attack_hit_area_collider_disabled.call_deferred(false)
-        attack_direction = 1 if position.x < target.position.x else -1
-        attack_duration = .2
-        BulletTimeManager.start_bullet_time()
-        swing_sfx.play()
+        target_in_range = true
+
+func _on_attack_area_body_exited(body: Node2D) -> void:
+    if body is Player:
+        target_in_range = false
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
     if body is Player:
