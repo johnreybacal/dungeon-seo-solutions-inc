@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
         if attack_duration <= 0:
             _set_attack_hit_area_collider_disabled.call_deferred(true)
     else:
-        weapon.rotation = vision_cone.rotation + rad_360
+        weapon.rotation = (vision_cone.rotation + rad_360) if target_in_sight else 0.0
 
     if attack_cooldown > 0:
         # Attack cooldown
@@ -107,7 +107,6 @@ func _physics_process(delta: float) -> void:
             # Keep looking at target
             vision_cone.look_at(target.position)
             if return_timer <= 0:
-                weapon.rotation = 0
                 target = null
                 # Go back to original position
                 set_movement_target(original_position)
@@ -135,6 +134,8 @@ func _on_vision_cone_area_body_entered(body: Node2D) -> void:
     if body is Player:
         target = body
         target_in_sight = true
+        # Don't attack instantly
+        attack_cooldown = 1
         body.add_chaser(self )
         set_movement_target(body.position)
         vision_renderer.color = alert_color
@@ -176,6 +177,8 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 
 func _on_attack_hit_area_body_entered(body: Node2D) -> void:
     if body is Player:
+        # Avoid multiple hits
+        _set_attack_hit_area_collider_disabled.call_deferred(true)
         body.hit(position)
         hit_sfx.play()
 
