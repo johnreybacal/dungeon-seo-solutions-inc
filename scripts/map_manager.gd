@@ -17,11 +17,12 @@ var enemy_positions: Array[Vector2i]
 signal map_updated(coords: Vector2i, value: int)
 signal map_ready()
 
-func generate_map():
+func generate_map(level: int):
     enemy_positions = []
-    map = MapData.tutorial.duplicate_deep()
-    player_map = MapData.tutorial.duplicate_deep()
-    player_map_initial = MapData.tutorial.duplicate_deep()
+    var level_map = MapData.LEVELS[level]
+    map = level_map.duplicate_deep()
+    player_map = level_map.duplicate_deep()
+    player_map_initial = level_map.duplicate_deep()
     for y in range(len(player_map)):
         for x in range(len(player_map[y])):
             var cell = player_map[y][x]

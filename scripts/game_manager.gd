@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var level: int
 @onready var dungeon_tile_map: TileMapLayer = $DungeonTileMap
 @onready var map_guide_tile_map: TileMapLayer = $MapGuideTileMap
 @onready var player: Player = $Player
@@ -15,7 +16,7 @@ var trap_cooldowns: Dictionary[Vector2i, float]
 func _ready() -> void:
     MapManager.map_ready.connect(_draw_dungeon)
     MapManager.map_updated.connect(_update_map_guide)
-    MapManager.generate_map()
+    MapManager.generate_map(level)
 
     player.triggered.connect(_on_tile_triggered)
     
