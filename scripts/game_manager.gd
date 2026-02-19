@@ -3,9 +3,10 @@ extends Node2D
 @export var level: int
 @onready var dungeon_tile_map: TileMapLayer = $DungeonTileMap
 @onready var map_guide_tile_map: TileMapLayer = $MapGuideTileMap
-@onready var player: Player = $Player
 @onready var camera: Camera2D = $Camera2D
 @onready var hud: HUD = $HUD
+@onready var y_sortable: Node2D = $YSortable
+@onready var player: Player = $YSortable/Player
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
 var anvil_trap_scene := preload("res://scenes/anvil_trap.tscn")
@@ -86,7 +87,7 @@ func _draw_dungeon():
     for enemy_position in MapManager.enemy_positions:
         var enemy: Enemy = enemy_scene.instantiate()
         enemy.position = dungeon_tile_map.map_to_local(enemy_position)
-        add_child.call_deferred(enemy)
+        y_sortable.add_child.call_deferred(enemy)
 
     print("traps at: ", traps)
 
@@ -110,7 +111,7 @@ func _on_tile_triggered():
         var anvil: AnvilTrap = anvil_trap_scene.instantiate()
         anvil.position = trap_position
         anvil.player_hit.connect(_on_player_hit)
-        add_child.call_deferred(anvil)
+        y_sortable.add_child.call_deferred(anvil)
         BulletTimeManager.start_bullet_time()
         hud.hide_hud()
 

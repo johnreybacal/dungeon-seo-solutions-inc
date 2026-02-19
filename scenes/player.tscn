@@ -275,7 +275,6 @@ radius = 7.0
 radius = 3.5
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-z_index = 5
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_g2els")

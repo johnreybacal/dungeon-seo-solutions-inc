@@ -32,7 +32,7 @@ func _ready() -> void:
     player = get_tree().get_first_node_in_group("Player")
     map = get_tree().get_first_node_in_group("Map")
     camera = get_tree().get_first_node_in_group("Camera")
-    
+
     player.hp = 99999
 
     camera.limit_bottom = 180 + 16
@@ -115,7 +115,7 @@ func _update_instructions():
     elif stage == 3:
         trap_sprite.visible = false
         q_sprite.visible = true
-        instruction_label.text = "Your Job: Mark traps in the map."
+        instruction_label.text = "Your Job: Mark traps on the map."
     # Proceed to monsters
     elif stage == 4:
         q_sprite.visible = false
@@ -129,7 +129,7 @@ func _update_instructions():
     elif stage == 7:
         instruction.visible = true
         instruction.position = Vector2(536, 231)
-        instruction_label.text = "That's it! Mark traps and survive."
+        instruction_label.text = "That's it! Mark traps and survive.\nGood luck crawler!"
 
 
 func _on_map_update(coords: Vector2i, value: int):

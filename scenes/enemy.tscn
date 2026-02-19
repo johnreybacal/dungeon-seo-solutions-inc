@@ -276,9 +276,8 @@ radius = 6.0
 radius = 14.0
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("vision_renderer")]
-z_index = 1
 collision_layer = 8
-collision_mask = 5
+collision_mask = 13
 motion_mode = 1
 script = ExtResource("1_5uy6h")
 vision_renderer = NodePath("VisionCone/VisionCone2D/VisionConeRenderer")
