@@ -24,8 +24,8 @@ var is_mouse_left = false
 var is_mouse_right = false
 
 var min_y = 2
-var max_y = 21
-var min_x = 0
+var max_y = 22
+var min_x = 1
 var max_x = 40
 
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
@@ -73,18 +73,15 @@ func _input(event: InputEvent) -> void:
         if event.button_index == MOUSE_BUTTON_LEFT:
             is_mouse_left = event.pressed
             if is_mouse_left:
-                left_mouse_hint.skew = deg_to_rad(randf_range(-5, 5))
                 _draw_cell()
-            else:
-                left_mouse_hint.skew = 0
-
+            _shake_mouse_hint()
+            
         elif event.button_index == MOUSE_BUTTON_RIGHT:
             is_mouse_right = event.pressed
             if is_mouse_right:
-                right_mouse_hint.skew = deg_to_rad(randf_range(-5, 5))
                 _draw_cell()
-            else:
-                right_mouse_hint.skew = 0
+            _shake_mouse_hint()
+
 
     if event is InputEventMouseMotion:
         if is_mouse_left or is_mouse_right:
@@ -92,12 +89,15 @@ func _input(event: InputEvent) -> void:
         var coords := tile_map_layer.local_to_map(get_local_mouse_position())
         var x = coords.x # - 1
         var y = coords.y # - 1
-        if x >= min_x and x <= max_x and y >= min_y and y <= max_y:
+        if x > min_x and x < max_x and y > min_y and y < max_y:
             coordinates_label.text = str(coords.x) + ", " + str(coords.y)
             coordinates_label.visible = true
+            _shake_mouse_hint()
         else:
             coordinates_label.visible = false
             
+
+func _shake_mouse_hint():
     if is_mouse_left:
         left_mouse_hint.skew = deg_to_rad(randf_range(-5, 5))
         left_mouse_hint.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
@@ -111,7 +111,6 @@ func _input(event: InputEvent) -> void:
     else:
         right_mouse_hint.skew = 0
         right_mouse_hint.scale = Vector2.ONE
-
 # func _reset_hint_position():
 #     ground_hint.position.y = -2 if current_cell == MapCell.Ground else 0
 #     wall_hint.position.y = -2 if current_cell == MapCell.Wall else 0
@@ -119,6 +118,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _draw_cell():
+    if not StateManager.is_map_open:
+        return
     if is_mouse_left:
         current_cell = MapCell.Trap
     elif is_mouse_right:
@@ -130,11 +131,12 @@ func _draw_cell():
     var x = coords.x
     var y = coords.y
 
-    var cell_data = MapManager.player_map_initial[y][x]
-    if cell_data in [1, 2]:
-        return
     # don't draw outside
     if x < min_x or x > max_x or y < min_y or y > max_y:
+        return
+
+    var cell_data = MapManager.player_map_initial[y][x]
+    if cell_data in [1, 2]:
         return
     
     tile_map_layer.set_cell(coords, 0, cell_coords[current_cell])

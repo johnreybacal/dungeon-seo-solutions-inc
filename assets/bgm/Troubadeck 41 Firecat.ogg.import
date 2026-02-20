@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dik0mhih8yusa"
+path="res://.godot/imported/Troubadeck 41 Firecat.ogg-806ada0426fe69bb79306aef98233b78.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/bgm/Troubadeck 41 Firecat.ogg"
+dest_files=["res://.godot/imported/Troubadeck 41 Firecat.ogg-806ada0426fe69bb79306aef98233b78.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

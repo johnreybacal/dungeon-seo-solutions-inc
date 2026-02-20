@@ -125,7 +125,7 @@ func hit(source_position: Vector2):
     knock_back_direction = source_position.direction_to(position)
 
 func die(source_position: Vector2):
-    BulletTimeManager.stop_bullet_time(false)
+    BulletTimeManager.stop_bullet_time()
     z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)
     velocity = Vector2(x, -200)

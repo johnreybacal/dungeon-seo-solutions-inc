@@ -25,11 +25,6 @@ func _ready() -> void:
 
     BulletTimeManager.on_bullet_time_end.connect(hud.show)
 
-func _input(event: InputEvent) -> void:
-    if event.is_action_pressed("toggle_map") and not BulletTimeManager.is_bullet_time() and not player.is_dying:
-        hud.toggle_map()
-
-
 func _physics_process(delta: float) -> void:
     for key in trap_cooldowns.keys():
         if trap_cooldowns[key] > 0:

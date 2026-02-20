@@ -338,6 +338,7 @@ volume_db = -5.0
 bus = &"SFX"
 
 [node name="VisionCone" type="Node2D" parent="."]
+z_index = -2
 
 [node name="VisionCone2D" parent="VisionCone" instance=ExtResource("3_4ra3w")]
 rotation = -1.5708

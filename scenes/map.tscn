@@ -38,7 +38,7 @@ tile_set = ExtResource("1_4xfga")
 
 [node name="Hint" type="Node2D" parent="."]
 z_index = 2
-position = Vector2(112, 210)
+position = Vector2(112, 203)
 
 [node name="LeftMouse" type="Node2D" parent="Hint"]
 position = Vector2(64, 0)

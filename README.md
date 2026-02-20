@@ -73,3 +73,4 @@ Bullet time
    - Minimap Pack: Textures
  - Swing SFX: https://pixabay.com/users/floraphonic-38928062/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=198498
  - Font: https://fonts.google.com/specimen/Tiny5?selection.family=Tiny5
+ - BGM: https://tallbeard.itch.io/music-loop-bundle
