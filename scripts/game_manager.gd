@@ -53,6 +53,7 @@ func _draw_dungeon():
     var top_walls_coordinates: Array[Vector2i] = []
     var wall_coordinates: Array[Vector2i] = []
     var ground_coordinates: Array[Vector2i] = []
+    # var ground_redraw_coordinates: Array[Vector2i] = []
 
     var y: int = 0
     for y_cells in cells:
@@ -60,7 +61,6 @@ func _draw_dungeon():
         for cell in y_cells:
             var coords = Vector2i(x, y)
             ground_coordinates.append(coords)
-            # if cell == 0:
             if cell == 1:
                 top_walls_coordinates.append(coords)
             if cell == 2:
@@ -74,9 +74,17 @@ func _draw_dungeon():
     # Draw ground first
     dungeon_tile_map.set_cells_terrain_connect(ground_coordinates, 0, 1, true)
     # Draw walls
-    dungeon_tile_map.set_cells_terrain_connect(wall_coordinates, 0, 2, true)
     # Draw top walls (will fix walls)
+    dungeon_tile_map.set_cells_terrain_connect(wall_coordinates, 0, 2, true)
     dungeon_tile_map.set_cells_terrain_connect(top_walls_coordinates, 0, 0, true)
+    # Redraw for correct rendering
+    dungeon_tile_map.set_cells_terrain_connect(wall_coordinates, 0, 2, true)
+    # dungeon_tile_map.set_cells_terrain_path(ground_redraw_coordinates, 0, 1, true)
+    # dungeon_tile_map.set_cells_terrain_connect(top_walls_coordinates, 0, 0, true)
+    # dungeon_tile_map.set_cells_terrain_connect(wall_coordinates, 0, 2, true)
+
+    # redraw ground to correct terrain
+    # dungeon_tile_map.set_cells_terrain_path(ground_redraw_coordinates, 0, 1, true)
 
     player.position = dungeon_tile_map.map_to_local(MapManager.player_position)
     for enemy_position in MapManager.enemy_positions:

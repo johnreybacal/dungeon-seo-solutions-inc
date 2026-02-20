@@ -63,6 +63,9 @@ Bullet time
 3. Player
 4. Enemy
 
+## Level Design
+ - Editing a matrix in code was hard so I had to improvise: https://docs.google.com/spreadsheets/d/1C1xhWRoHhRKSm5Tp-th4Fb-XeF_cy65tHPp9FQ0lW_0/edit?gid=0#gid=0
+
 ## Credits
  - https://kenney.nl/
    - Desert Shooter Pack:
