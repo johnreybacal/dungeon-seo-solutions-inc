@@ -28,6 +28,7 @@ var hp: int
 signal triggered()
 
 func _ready() -> void:
+    $VisionLimiter.visible = true
     hp = max_hp
 
 func _physics_process(delta: float) -> void:

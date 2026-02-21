@@ -15,6 +15,7 @@ var is_menu_shown = false
 @onready var transition: AnimationPlayer = $SceneTransition/AnimationPlayer
 
 func _ready() -> void:
+    $SceneTransition.visible = true
     _set_bgm_label()
     _set_sfx_label()
 
@@ -22,7 +23,7 @@ func _input(event: InputEvent) -> void:
     var can_toggle_ui = not BulletTimeManager.is_bullet_time() and StateManager.is_player_alive
     if not can_toggle_ui:
         return
-    if event.is_action_pressed("toggle_map"):
+    if event.is_action_pressed("toggle_map") and StateManager.can_open_map:
         _toggle_map()
         if is_menu_shown:
             _toggle_menu()
@@ -51,6 +52,7 @@ func _toggle_map():
 
 func _toggle_menu():
     is_menu_shown = !is_menu_shown
+    StateManager.is_menu_open = is_menu_shown
     menu_animation_player.play("show" if is_menu_shown else "hide")
 
 func _toggle_bgm():

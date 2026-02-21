@@ -328,6 +328,7 @@ pitch_scale = 0.5
 bus = &"SFX Slowable"
 
 [node name="VisionLimiter" type="Sprite2D" parent="."]
+visible = false
 z_index = 20
 texture = SubResource("GradientTexture2D_qlg0r")
 

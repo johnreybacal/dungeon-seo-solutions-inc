@@ -15,6 +15,7 @@ var state := MenuState.Initial
 @onready var transition: AnimationPlayer = $SceneTransition/AnimationPlayer
 
 func _ready() -> void:
+    $SceneTransition.visible = true
     _refresh_menu()
 
 func _input(event):

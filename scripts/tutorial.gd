@@ -29,6 +29,7 @@ var map: Map
 var input_threshold = .5
 
 func _ready() -> void:
+    StateManager.can_open_map = false
     player = get_tree().get_first_node_in_group("Player")
     map = get_tree().get_first_node_in_group("Map")
     camera = get_tree().get_first_node_in_group("Camera")
@@ -51,6 +52,11 @@ func _ready() -> void:
     _update_instructions()
 
 func _physics_process(delta: float) -> void:
+    instruction.modulate.a = lerp(
+        instruction.modulate.a,
+        .2 if StateManager.is_menu_open or StateManager.is_menu_open else 1.0,
+        .05
+    )
     # WASD
     if stage == 0:
         if Input.is_action_pressed("move_up"):
@@ -94,6 +100,9 @@ func _physics_process(delta: float) -> void:
     elif stage == 5:
         instruction.position.x = max(camera.position.x - 100, camera.limit_left + 100)
         instruction.position.y = max(camera.position.y, camera.limit_top + 100)
+    elif stage == 8:
+        instruction.position.x = min(camera.position.x + 100, camera.limit_right - 100)
+        instruction.position.y = clampf(camera.position.y, camera.limit_top + 100, camera.limit_bottom - 100)
 
 func _update_instructions():
     # WASD
@@ -115,6 +124,7 @@ func _update_instructions():
     elif stage == 3:
         trap_sprite.visible = false
         q_sprite.visible = true
+        StateManager.can_open_map = true
         instruction_label.text = "Your Job: Mark traps on the map."
     # Proceed to monsters
     elif stage == 4:
@@ -126,10 +136,14 @@ func _update_instructions():
     # Deal with Monsters
     elif stage == 6:
         instruction.visible = false
+    # Good luck
     elif stage == 7:
         instruction.visible = true
         instruction.position = Vector2(536, 231)
         instruction_label.text = "That's it! Mark traps and survive.\nGood luck crawler!"
+    # Exit Dungeon
+    elif stage == 8:
+        instruction_label.text = "Esc > E to leave the dungeon. You cannot go back"
 
 
 func _on_map_update(coords: Vector2i, value: int):
@@ -162,6 +176,11 @@ func _on_third_area_exit_area_body_entered(body: Node2D) -> void:
 func _on_fourth_area_entrance_area_body_entered(body: Node2D) -> void:
     if body is Player and stage == 6:
         stage = 7
+        _update_instructions()
+
+func _on_fifth_area_entrance_area_body_entered(body: Node2D) -> void:
+    if body is Player and stage == 7:
+        stage = 8
         _update_instructions()
 
 

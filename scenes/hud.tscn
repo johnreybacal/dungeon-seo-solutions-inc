@@ -316,6 +316,7 @@ libraries = {
 }
 
 [node name="SceneTransition" type="ColorRect" parent="."]
+visible = false
 z_index = 50
 custom_minimum_size = Vector2(1280, 720)
 offset_right = 455.0
