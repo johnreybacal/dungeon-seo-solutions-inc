@@ -10,6 +10,8 @@ enum MapCell {
 @onready var coordinates_label: Label = $CoordinatesLabel
 @onready var left_mouse_hint: Node2D = $Hint/LeftMouse
 @onready var right_mouse_hint: Node2D = $Hint/RightMouse
+@onready var cursor: Sprite2D = $Cursor
+@onready var draw_sfx: AudioStreamPlayer = $DrawSfx
 
 var current_cell: MapCell = MapCell.Ground
 
@@ -59,15 +61,8 @@ func _setup_map():
         tile_map_layer.set_cell(Vector2i(i, 24), 0, Vector2(-1, -1))
 
 func _input(event: InputEvent) -> void:
-    # if event.is_action_pressed("use_ground"):
-    #     current_cell = MapCell.Ground
-    #     _reset_hint_position()
-    # if event.is_action_pressed("use_wall"):
-    #     current_cell = MapCell.Wall
-    #     _reset_hint_position()
-    # if event.is_action_pressed("use_trap"):
-    #     current_cell = MapCell.Trap
-    #     _reset_hint_position()
+    if not StateManager.is_map_open:
+        return
     # https://www.youtube.com/watch?v=U_TGOgp5-pc
     if event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT:
@@ -84,9 +79,11 @@ func _input(event: InputEvent) -> void:
 
 
     if event is InputEventMouseMotion:
+        var mouse_position := get_local_mouse_position()
+        cursor.position = mouse_position
         if is_mouse_left or is_mouse_right:
             _draw_cell()
-        var coords := tile_map_layer.local_to_map(get_local_mouse_position())
+        var coords := tile_map_layer.local_to_map(mouse_position)
         var x = coords.x # - 1
         var y = coords.y # - 1
         if x > min_x and x < max_x and y > min_y and y < max_y:
@@ -101,16 +98,30 @@ func _shake_mouse_hint():
     if is_mouse_left:
         left_mouse_hint.skew = deg_to_rad(randf_range(-5, 5))
         left_mouse_hint.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
+        cursor.skew = deg_to_rad(randf_range(-5, 5))
+        cursor.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
+        cursor.flip_h = false
+        cursor.offset.y = 0
+        return
     else:
         left_mouse_hint.skew = 0
         left_mouse_hint.scale = Vector2.ONE
+        cursor.skew = 0
+        cursor.scale = Vector2.ONE
 
     if is_mouse_right:
         right_mouse_hint.skew = deg_to_rad(randf_range(-5, 5))
         right_mouse_hint.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
+        cursor.skew = deg_to_rad(randf_range(-5, 5))
+        cursor.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
+        cursor.flip_h = true
+        cursor.offset.y = -12
+        # cursor.flip_v = true
     else:
         right_mouse_hint.skew = 0
         right_mouse_hint.scale = Vector2.ONE
+        cursor.skew = 0
+        cursor.scale = Vector2.ONE
 # func _reset_hint_position():
 #     ground_hint.position.y = -2 if current_cell == MapCell.Ground else 0
 #     wall_hint.position.y = -2 if current_cell == MapCell.Wall else 0
@@ -139,6 +150,12 @@ func _draw_cell():
     if cell_data in [1, 2]:
         return
     
+    var current_coords := tile_map_layer.get_cell_atlas_coords(coords)
+    # same cell coords
+    if current_coords == cell_coords[current_cell]:
+        return
+
+    draw_sfx.play()
     tile_map_layer.set_cell(coords, 0, cell_coords[current_cell])
     MapManager.update_player_map(Vector2i(x, y), current_cell)
 

@@ -48,7 +48,6 @@ func _toggle_map():
     map_hint_label.visible = !is_map_shown
     map_animation_player.play("show" if is_map_shown else "hide")
     StateManager.is_map_open = is_map_shown
-    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_map_shown else Input.MOUSE_MODE_HIDDEN
 
 func _toggle_menu():
     is_menu_shown = !is_menu_shown

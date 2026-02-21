@@ -38,6 +38,7 @@ window/stretch/mode="viewport"
 Camera=""
 Player=""
 Map=""
+Cursor=""
 
 [input]
 

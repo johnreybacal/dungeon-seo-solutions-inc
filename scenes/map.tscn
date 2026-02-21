@@ -1,13 +1,21 @@
-[gd_scene load_steps=6 format=4 uid="uid://5l2vv43h2d7v"]
+[gd_scene load_steps=8 format=4 uid="uid://5l2vv43h2d7v"]
 
 [ext_resource type="TileSet" uid="uid://bwymedbidlfv2" path="res://resources/map.tres" id="1_4xfga"]
 [ext_resource type="Script" uid="uid://cdaaenut63vxo" path="res://scripts/map.gd" id="1_paxxb"]
 [ext_resource type="FontFile" uid="uid://dy4n1bik70bfr" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_gldc4"]
 [ext_resource type="Texture2D" uid="uid://d1rsdawk2rfs8" path="res://assets/sprites/map.png" id="4_0cso3"]
 [ext_resource type="Texture2D" uid="uid://dpklhthnoorni" path="res://assets/sprites/input_prompt.png" id="4_2klcf"]
+[ext_resource type="Texture2D" uid="uid://bof8lwolvlwnf" path="res://assets/sprites/cursor.png" id="6_2lpho"]
+[ext_resource type="AudioStream" uid="uid://bsf1jppthocdy" path="res://assets/sfx/move-d.ogg" id="7_nakos"]
 
 [node name="Map" type="Node2D" groups=["Map"]]
 script = ExtResource("1_paxxb")
+
+[node name="Cursor" type="Sprite2D" parent="." groups=["Cursor"]]
+modulate = Color(0.8039216, 0.78039217, 0.7411765, 1)
+z_index = 51
+texture = ExtResource("6_2lpho")
+centered = false
 
 [node name="CoordinatesLabel" type="Label" parent="."]
 z_index = 1
@@ -141,3 +149,9 @@ theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_gldc4")
 text = "3: Trap"
 metadata/_edit_use_anchors_ = true
+
+[node name="DrawSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_nakos")
+volume_db = -10.0
+pitch_scale = 15.0
+bus = &"SFX"
