@@ -1,0 +1,217 @@
+[gd_scene load_steps=10 format=3 uid="uid://bc2d4nqki1dg3"]
+
+[ext_resource type="FontFile" uid="uid://dy4n1bik70bfr" path="res://assets/fonts/Tiny5-Regular.ttf" id="1_yqeox"]
+[ext_resource type="Script" uid="uid://bqopdcwemlrlc" path="res://scripts/menu.gd" id="2_vjb58"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjb58"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_con2f"]
+
+[sub_resource type="Theme" id="Theme_mhnvy"]
+Label/colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_yqeox")
+Label/styles/focus = SubResource("StyleBoxFlat_vjb58")
+Label/styles/normal = SubResource("StyleBoxEmpty_con2f")
+
+[sub_resource type="Animation" id="Animation_uo2fv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6fi6k"]
+resource_name = "start"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(0.39229232, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hd3ao"]
+resource_name = "start"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(0.39229232, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_047uy"]
+_data = {
+&"RESET": SubResource("Animation_uo2fv"),
+&"fade_in": SubResource("Animation_hd3ao"),
+&"fade_out": SubResource("Animation_6fi6k")
+}
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_mhnvy")
+script = ExtResource("2_vjb58")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25490198, 0.18431373, 0.22352941, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "Dungeon SEO Solutions Inc"
+
+[node name="Spacer" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Actions" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Initial" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions"]
+layout_mode = 2
+
+[node name="Play" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Initial"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "1: Start Crawling"
+
+[node name="Settings" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Initial"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "2: Settings"
+
+[node name="Settings" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions"]
+visible = false
+layout_mode = 2
+
+[node name="BGM" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "1: Mute BGM"
+
+[node name="SFX" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "2: Mute SFX"
+
+[node name="Fullscreen" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "3: Toggle Fullscreen"
+
+[node name="Back" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Actions/Settings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "Esc: Back"
+
+[node name="Analytics" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 2
+
+[node name="Analytics" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Analytics"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 32
+text = "Statistics
+Dungeons indexed
+Crawler casualty
+Monster casualty
+Adventurers died by unmarked traps
+Adventurers died by marked traps"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="SceneTransition" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25490198, 0.18431373, 0.22352941, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SceneTransition"]
+libraries = {
+&"": SubResource("AnimationLibrary_047uy")
+}
+autoplay = "fade_out"

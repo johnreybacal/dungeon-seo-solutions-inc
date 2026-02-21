@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dsdf5hsph7obg"]
+[gd_scene load_steps=14 format=3 uid="uid://dsdf5hsph7obg"]
 
 [ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://coxfdn52kikch" path="res://scripts/player.gd" id="1_g2els"]
@@ -274,6 +274,17 @@ radius = 7.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
 radius = 3.5
 
+[sub_resource type="Gradient" id="Gradient_dqkch"]
+offsets = PackedFloat32Array(0, 0.057877813, 0.3279743)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0, 0.25490198, 0.18431373, 0.22352941, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qlg0r"]
+gradient = SubResource("Gradient_dqkch")
+width = 1000
+height = 1000
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 4
 motion_mode = 1
@@ -315,6 +326,10 @@ stream = ExtResource("4_dqkch")
 volume_db = -10.0
 pitch_scale = 0.5
 bus = &"SFX Slowable"
+
+[node name="VisionLimiter" type="Sprite2D" parent="."]
+z_index = 20
+texture = SubResource("GradientTexture2D_qlg0r")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]

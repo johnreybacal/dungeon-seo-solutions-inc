@@ -12,6 +12,8 @@ var is_menu_shown = false
 @onready var bgm_label: Label = $MenuContainer/SettingsBackdrop/Bgm
 @onready var sfx_label: Label = $MenuContainer/SettingsBackdrop/Sfx
 
+@onready var transition: AnimationPlayer = $SceneTransition/AnimationPlayer
+
 func _ready() -> void:
     _set_bgm_label()
     _set_sfx_label()
@@ -30,6 +32,9 @@ func _input(event: InputEvent) -> void:
             _toggle_map()
 
     if is_menu_shown:
+        if event.is_action_pressed("exit_dungeon"):
+            _toggle_menu()
+            _exit_dungeon()
         if event.is_action_pressed("toggle_mute_bgm"):
             _toggle_bgm()
         if event.is_action_pressed("toggle_mute_sfx"):
@@ -73,6 +78,12 @@ func _set_sfx_label():
     label += "Unmute" if AudioManager.is_sfx_muted else "Mute"
     label += " SFX"
     sfx_label.text = label
+
+func _exit_dungeon():
+    transition.play("fade_in")
+    await transition.animation_finished
+    get_tree().change_scene_to_file("res://scenes/menu.tscn")
+
 
 func hide_hud():
     visible = false
