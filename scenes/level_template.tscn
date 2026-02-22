@@ -33,4 +33,4 @@ z_index = 5
 y_sort_enabled = true
 
 [node name="Player" parent="YSortable" instance=ExtResource("2_yqjtg")]
-position = Vector2(91, 58)
+position = Vector2(-200, -200)

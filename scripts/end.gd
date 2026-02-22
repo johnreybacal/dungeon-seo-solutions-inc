@@ -25,9 +25,14 @@ func _ready():
 
 func _input(event: InputEvent) -> void:
     if event.is_action_pressed("dash") and not updating:
+        updating = true
         _transition_to_menu()
 
 func _transition_to_menu():
     animation_player.play("text_fade_out")
     await animation_player.animation_finished
-    get_tree().change_scene_to_file("res://scenes/menu.tscn")
+    # if StateManager.level == 2:
+    if StateManager.level == len(MapData.LEVELS):
+        get_tree().change_scene_to_file("res://scenes/game_over.tscn")
+    else:
+        get_tree().change_scene_to_file("res://scenes/menu.tscn")

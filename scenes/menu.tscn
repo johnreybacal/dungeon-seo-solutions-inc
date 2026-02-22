@@ -1,44 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bc2d4nqki1dg3"]
+[gd_scene load_steps=7 format=3 uid="uid://bc2d4nqki1dg3"]
 
-[ext_resource type="FontFile" uid="uid://dy4n1bik70bfr" path="res://assets/fonts/Tiny5-Regular.ttf" id="1_yqeox"]
+[ext_resource type="Theme" uid="uid://x13mk3xapt2u" path="res://resources/theme.tres" id="1_vjb58"]
 [ext_resource type="Script" uid="uid://bqopdcwemlrlc" path="res://scripts/menu.gd" id="2_vjb58"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjb58"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.75)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_con2f"]
-
-[sub_resource type="Theme" id="Theme_mhnvy"]
-Label/colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/colors/font_shadow_color = Color(0, 0, 0, 0)
-Label/constants/line_spacing = 3
-Label/constants/outline_size = 0
-Label/constants/shadow_offset_x = 1
-Label/constants/shadow_offset_y = 1
-Label/constants/shadow_outline_size = 1
-Label/font_sizes/font_size = 24
-Label/fonts/font = ExtResource("1_yqeox")
-Label/styles/focus = SubResource("StyleBoxFlat_vjb58")
-Label/styles/normal = SubResource("StyleBoxEmpty_con2f")
 
 [sub_resource type="Animation" id="Animation_uo2fv"]
 length = 0.001
@@ -101,7 +64,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_mhnvy")
+theme = ExtResource("1_vjb58")
 script = ExtResource("2_vjb58")
 
 [node name="ColorRect" type="ColorRect" parent="."]

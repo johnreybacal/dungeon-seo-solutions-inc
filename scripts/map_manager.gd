@@ -20,6 +20,7 @@ signal map_ready()
 
 func generate_map(level: int):
     enemy_positions = []
+    boss_positions = []
     var level_map = MapData.LEVELS[level]
     map = level_map.duplicate_deep()
     player_map = level_map.duplicate_deep()

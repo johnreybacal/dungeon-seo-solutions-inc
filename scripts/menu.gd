@@ -14,41 +14,11 @@ var state := MenuState.Initial
 
 @onready var transition: AnimationPlayer = $SceneTransition/AnimationPlayer
 
-@onready var analytics: GridContainer = $MarginContainer/VBoxContainer/HBoxContainer/Analytics
-
 func _ready() -> void:
     $SceneTransition.visible = true
     _refresh_menu()
-
-    if StateManager.level > 0:
-        _add_stat_row("", "Statistics")
-        _add_stat_row("Dungeons Indexed:", StateManager.level)
-        _add_stat_row("Average Reliability:", str(snappedf(StateManager.average_precision * 100, 2)) + "%")
-        _add_stat_row("Average Completeness:", str(snappedf(StateManager.average_recall * 100, 2)) + "%")
-        _add_stat_row("Average Quality:", str(snappedf(StateManager.average_quality * 100, 2)) + "%")
-
-
-        if StateManager.player_death_count > 0:
-            _add_stat_row("Crawler Casualty: ", StateManager.player_death_count)
-        if StateManager.total_monster_death_count > 0:
-            _add_stat_row("Monster Casualty: ", StateManager.total_monster_death_count)
-        if StateManager.adv_death_unmarked > 0:
-            _add_stat_row("Adventurers died\non Unmarked Traps: ", StateManager.adv_death_unmarked)
-        if StateManager.adv_death_marked > 0:
-            _add_stat_row("Adventurers died on\nMarked Traps (on purpose): ", StateManager.adv_death_marked)
-
-
-func _add_stat_row(label: String, value: Variant):
-    var l = Label.new()
-    l.text = label
-    l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-    l.add_theme_font_size_override("font_size", 32)
-    analytics.add_child.call_deferred(l)
-    var v = Label.new()
-    v.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-    v.add_theme_font_size_override("font_size", 32)
-    v.text = str(value)
-    analytics.add_child.call_deferred(v)
+    _set_bgm_label()
+    _set_sfx_label()
 
 func _input(event):
     if state == MenuState.Initial:

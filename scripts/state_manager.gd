@@ -26,8 +26,28 @@ var recent_precision: float = 0
 var recent_recall: float = 0
 var recent_quality: float = 0
 
+var adv: int = 0
 var adv_death_unmarked: int = 0
 var adv_death_marked: int = 0
+
+func reset():
+    level = 0
+    player_death_count = 0
+    total_monster_death_count = 0
+    recent_monster_death_count = 0
+    sum_precision = 0
+    sum_recall = 0
+    sum_quality = 0
+    average_precision = 0
+    average_recall = 0
+    average_quality = 0
+    recent_precision = 0
+    recent_recall = 0
+    recent_quality = 0
+    adv = 0
+    adv_death_unmarked = 0
+    adv_death_marked = 0
+
 
 func exit_dungeon():
     is_exited = true
@@ -86,6 +106,7 @@ func exit_dungeon():
     average_quality = sum_quality / level
 
     var adv_count = randi_range(10, 50) * level
+    adv += adv_count
     adv_death_unmarked += floor(adv_count * (1 - average_quality))
     for i in range(level):
         adv_death_marked += [0, 0, 0, 0, 0, 0, 1, 1, 2].pick_random()
@@ -103,4 +124,4 @@ func get_exit_scene_path() -> String:
         return "res://scenes/menu.tscn"
     else:
         # End scene
-        return "res://scenes/menu.tscn"
+        return "res://scenes/game_over.tscn"
