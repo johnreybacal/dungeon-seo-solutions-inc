@@ -101,6 +101,7 @@ func _shake_mouse_hint():
         cursor.skew = deg_to_rad(randf_range(-5, 5))
         cursor.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
         cursor.flip_h = false
+        # cursor.flip_v = false
         cursor.offset.y = 0
         return
     else:
@@ -115,6 +116,7 @@ func _shake_mouse_hint():
         cursor.skew = deg_to_rad(randf_range(-5, 5))
         cursor.scale = Vector2(randf_range(0.95, 1.05), randf_range(0.95, 1.05))
         cursor.flip_h = true
+        # cursor.flip_v = true
         cursor.offset.y = -12
         # cursor.flip_v = true
     else:
@@ -122,6 +124,8 @@ func _shake_mouse_hint():
         right_mouse_hint.scale = Vector2.ONE
         cursor.skew = 0
         cursor.scale = Vector2.ONE
+        cursor.flip_h = false
+        cursor.offset.y = 0
 # func _reset_hint_position():
 #     ground_hint.position.y = -2 if current_cell == MapCell.Ground else 0
 #     wall_hint.position.y = -2 if current_cell == MapCell.Wall else 0
