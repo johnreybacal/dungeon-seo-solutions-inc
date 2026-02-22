@@ -6,6 +6,7 @@ var player_map_initial: Array
 
 var player_position: Vector2i
 var enemy_positions: Array[Vector2i]
+var boss_positions: Array[Vector2i]
 
 # 0 ground
 # 1 wall
@@ -30,6 +31,8 @@ func generate_map(level: int):
                 player_position = Vector2i(x, y)
             if cell == 8:
                 enemy_positions.append(Vector2i(x, y))
+            if cell == 7:
+                boss_positions.append(Vector2i(x, y))
             elif cell == 2:
                 player_map[y][x] = 1
                 player_map_initial[y][x] = 1

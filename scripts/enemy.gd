@@ -17,6 +17,9 @@ class_name Enemy
 @onready var hit_sfx: AudioStreamPlayer = $SFX/Hit
 @onready var swing_sfx: AudioStreamPlayer = $SFX/Swing
 
+var is_boss: bool = false
+var hits: int = 0
+
 var move_speed: float = 100
 
 var return_timer = 0
@@ -38,6 +41,10 @@ var rad_360 = deg_to_rad(360)
 
 
 func _ready() -> void:
+    if is_boss:
+        move_speed *= .75
+        scale = Vector2(2, 2)
+        animation_player.speed_scale *= .75
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
     patrol_rotation *= 1 if randi_range(0, 1) == 1 else -1
     _set_attack_area_collider_disabled(true)
@@ -155,6 +162,9 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
 
 
 func die(source_position: Vector2):
+    if is_boss and hits < 3:
+        hits += 1
+        return
     vision_cone.queue_free()
     z_index += 10
     var x = randf_range(0, -100 if source_position.x > position.x else 100)

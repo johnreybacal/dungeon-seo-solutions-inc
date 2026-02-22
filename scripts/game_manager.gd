@@ -97,6 +97,11 @@ func _draw_dungeon():
         var enemy: Enemy = enemy_scene.instantiate()
         enemy.position = dungeon_tile_map.map_to_local(enemy_position)
         y_sortable.add_child.call_deferred(enemy)
+    for boss_position in MapManager.boss_positions:
+        var enemy: Enemy = enemy_scene.instantiate()
+        enemy.is_boss = true
+        enemy.position = dungeon_tile_map.map_to_local(boss_position)
+        y_sortable.add_child.call_deferred(enemy)
 
     print("traps at: ", traps)
 
