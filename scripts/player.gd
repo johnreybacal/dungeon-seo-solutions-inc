@@ -17,6 +17,9 @@ var is_dying := false
 var dying_rotation: float
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var vision_limiter: Sprite2D = $VisionLimiter
+
+var target_vision_limiter_scale = Vector2.ONE
 
 var chasers: Array[int]
 var vanish_timer = 0
@@ -38,6 +41,8 @@ func _physics_process(delta: float) -> void:
         rotate(dying_rotation * delta)
         move_and_slide()
         return
+    
+    vision_limiter.scale = lerp(vision_limiter.scale, target_vision_limiter_scale, .05)
     
     if knock_back_duration > 0:
         knock_back_duration -= delta
@@ -106,6 +111,7 @@ func _handle_animation():
     else:
         collision_layer = 7
         is_hidden = false
+        target_vision_limiter_scale = Vector2.ONE
 
         if is_dashing:
             animation_player.play("dash")
@@ -143,6 +149,7 @@ func die(source_position: Vector2):
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
     if anim_name == "hide":
         is_hidden = true
+        target_vision_limiter_scale = Vector2(.75, .75)
         collision_layer = 0
 
 func add_chaser(node: Node2D):
