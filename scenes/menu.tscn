@@ -55,22 +55,6 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_6fi6k"]
-resource_name = "start"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(0.39229232, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_hd3ao"]
 resource_name = "start"
 length = 1.5
@@ -85,6 +69,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(0.39229232, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6fi6k"]
+resource_name = "start"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(0.39229232, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_047uy"]
@@ -182,24 +182,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 52
 text = "Esc: Back"
 
-[node name="Analytics" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Analytics" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 8
-alignment = 2
-
-[node name="Analytics" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Analytics"]
-layout_mode = 2
-size_flags_vertical = 6
-theme_override_font_sizes/font_size = 32
-text = "Statistics
-Dungeons indexed
-Crawler casualty
-Monster casualty
-Adventurers died by unmarked traps
-Adventurers died by marked traps"
-horizontal_alignment = 2
-vertical_alignment = 2
+columns = 2
 
 [node name="SceneTransition" type="ColorRect" parent="."]
 visible = false

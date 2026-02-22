@@ -166,6 +166,7 @@ func die(source_position: Vector2):
     animation_player.play("RESET")
     _set_attack_area_collider_disabled.call_deferred(true)
     _set_attack_hit_area_collider_disabled.call_deferred(true)
+    StateManager.recent_monster_death_count += 1
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
     if body is Player:

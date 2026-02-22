@@ -22,9 +22,13 @@ func _ready() -> void:
     MapManager.generate_map(level)
 
     player.triggered.connect(_on_tile_triggered)
+    player.died.connect(hud.go_back_to_menu)
     
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
+    StateManager.is_exited = false
+    StateManager.recent_monster_death_count = 0
+    
     BulletTimeManager.on_bullet_time_end.connect(hud.show)
 
 func _physics_process(delta: float) -> void:

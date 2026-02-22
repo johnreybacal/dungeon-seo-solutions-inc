@@ -81,10 +81,10 @@ func _set_sfx_label():
     sfx_label.text = label
 
 func _exit_dungeon():
-    var exit_scene := StateManager.get_exit_scene_path()
+    StateManager.exit_dungeon()
     transition.play("fade_in")
     await transition.animation_finished
-    get_tree().change_scene_to_file(exit_scene)
+    get_tree().change_scene_to_file("res://scenes/end.tscn")
 
 
 func hide_hud():
@@ -96,3 +96,8 @@ func hide_hud():
 
 func set_player_coordinates(coords: Vector2i):
     player_coordinates_label.text = str(coords.x) + ", " + str(coords.y)
+
+func go_back_to_menu():
+    transition.play("fade_in")
+    await transition.animation_finished
+    get_tree().change_scene_to_file("res://scenes/end.tscn")

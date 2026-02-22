@@ -26,6 +26,7 @@ var max_hp: int = 3
 var hp: int
 
 signal triggered()
+signal died()
 
 func _ready() -> void:
     $VisionLimiter.visible = true
@@ -135,6 +136,8 @@ func die(source_position: Vector2):
     collision_mask = 0
     is_dying = true
     animation_player.play("RESET")
+    StateManager.player_death_count += 1
+    died.emit()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
