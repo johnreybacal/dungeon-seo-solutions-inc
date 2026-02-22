@@ -19,6 +19,7 @@ class_name Enemy
 
 var is_boss: bool = false
 var hits: int = 0
+var boss_max_hits: int = 3
 
 var move_speed: float = 100
 
@@ -32,6 +33,8 @@ var attack_cooldown: float
 var attack_duration: float
 var attack_direction: int
 
+var hurt_duration: float = 0
+
 var patrol_rotation = deg_to_rad(30)
 
 var is_dying := false
@@ -43,7 +46,7 @@ var rad_360 = deg_to_rad(360)
 func _ready() -> void:
     if is_boss:
         move_speed *= .75
-        scale = Vector2(2, 2)
+        scale = Vector2(1.5, 1.5)
         animation_player.speed_scale *= .75
     vision_cone.rotation = deg_to_rad(randi_range(0, 360))
     patrol_rotation *= 1 if randi_range(0, 1) == 1 else -1
@@ -75,6 +78,12 @@ func _physics_process(delta: float) -> void:
         move_and_slide()
         if position.y > 500:
             queue_free()
+        return
+
+    if hurt_duration > 0:
+        hurt_duration -= delta
+        if hurt_duration <= 0:
+            modulate = Color.WHITE
         return
 
     if attack_duration > 0:
@@ -162,8 +171,11 @@ func _on_vision_cone_area_body_exited(body: Node2D) -> void:
 
 
 func die(source_position: Vector2):
-    if is_boss and hits < 3:
+    if is_boss and hits < boss_max_hits - 1:
         hits += 1
+        hurt_duration = .2
+        modulate = Color.ORANGE_RED
+        animation_player.play("RESET")
         return
     vision_cone.queue_free()
     z_index += 10
