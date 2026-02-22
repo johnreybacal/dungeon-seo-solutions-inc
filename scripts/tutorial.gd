@@ -5,8 +5,9 @@ extends Node2D
 @onready var space_sprite: Sprite2D = $Instruction/Sprites/SpaceSprite
 @onready var trap_sprite: Sprite2D = $Instruction/Sprites/TrapSprite
 @onready var q_sprite: Sprite2D = $Instruction/Sprites/SpriteQ
-@onready var instruction_label: Label = $Instruction/Label
+@onready var leave: Node2D = $Instruction/Sprites/Leave
 
+@onready var instruction_label: Label = $Instruction/Label
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 
 var w_duration: float = 0
@@ -42,6 +43,7 @@ func _ready() -> void:
     space_sprite.visible = false
     trap_sprite.visible = false
     q_sprite.visible = false
+    leave.visible = false
 
     MapManager.map_updated.connect(_on_map_update)
     MapManager.player_map_initial[6][20] = 2
@@ -143,7 +145,8 @@ func _update_instructions():
         instruction_label.text = "That's it! Mark traps and survive.\nGood luck crawler!"
     # Exit Dungeon
     elif stage == 8:
-        instruction_label.text = "Esc > E to leave the dungeon. You cannot go back"
+        leave.visible = true
+        instruction_label.text = "Once you leave, you can't go back"
 
 
 func _on_map_update(coords: Vector2i, value: int):

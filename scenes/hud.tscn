@@ -182,22 +182,6 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_6fi6k"]
-resource_name = "start"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(0.39229232, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_hd3ao"]
 resource_name = "start"
 length = 1.5
@@ -212,6 +196,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(0.39229232, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6fi6k"]
+resource_name = "start"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(0.39229232, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_047uy"]
@@ -294,18 +294,18 @@ text = "1: Mute BGM"
 
 [node name="Sfx" type="Label" parent="MenuContainer/SettingsBackdrop"]
 offset_left = -67.00001
-offset_top = -8.0
+offset_top = -9.333333
 offset_right = 74.99993
-offset_bottom = 52.0
+offset_bottom = 50.666668
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_glx5p")
 text = "2: Mute SFX"
 
 [node name="Fullscreen" type="Label" parent="MenuContainer/SettingsBackdrop"]
 offset_left = -67.00001
-offset_top = 14.666667
+offset_top = 11.666667
 offset_right = 74.99993
-offset_bottom = 74.666664
+offset_bottom = 71.666664
 theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
 theme_override_fonts/font = ExtResource("2_glx5p")
 text = "3: Toggle Fullscreen"
