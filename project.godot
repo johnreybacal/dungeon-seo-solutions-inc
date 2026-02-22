@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Dungeon SEO Solutionc Inc."
-run/main_scene="uid://hm73vsi3860u"
+run/main_scene="uid://bc2d4nqki1dg3"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
