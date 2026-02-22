@@ -13,7 +13,8 @@ config_version=5
 config/name="Dungeon SEO Solutionc Inc."
 run/main_scene="uid://bc2d4nqki1dg3"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.25490198, 0.18431373, 0.22352941, 1)
+config/icon="uid://btimq3gur7nsf"
 
 [audio]
 

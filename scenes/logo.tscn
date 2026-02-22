@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://7bwktm44akvq"]
+
+[ext_resource type="Texture2D" uid="uid://bduwm0pobhefb" path="res://assets/sprites/dungeon.png" id="1_nc5ub"]
+[ext_resource type="FontFile" uid="uid://dy4n1bik70bfr" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_redmh"]
+
+[sub_resource type="Gradient" id="Gradient_redmh"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.25490198, 0.18431373, 0.22352941, 0.85490197)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_574r7"]
+gradient = SubResource("Gradient_redmh")
+
+[node name="Logo" type="Node2D"]
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-2, -2)
+scale = Vector2(5.0625, 2.9375)
+texture = SubResource("GradientTexture2D_574r7")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -10)
+zoom = Vector2(8, 8)
+
+[node name="Weapon" type="Sprite2D" parent="."]
+position = Vector2(-22.789932, 1.4305115e-06)
+rotation = -0.7853982
+scale = Vector2(0.99999994, 0.99999994)
+skew = -0.17453292
+texture = ExtResource("1_nc5ub")
+hframes = 12
+vframes = 11
+frame = 118
+
+[node name="Player" type="Sprite2D" parent="."]
+position = Vector2(10.210068, 4)
+scale = Vector2(1, 0.99999994)
+skew = 0.17453289
+texture = ExtResource("1_nc5ub")
+hframes = 12
+vframes = 11
+frame = 85
+
+[node name="Enemy" type="Sprite2D" parent="."]
+position = Vector2(-9.789932, 4)
+skew = -0.17453292
+texture = ExtResource("1_nc5ub")
+hframes = 12
+vframes = 11
+frame = 109
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(0, -18)
+scale = Vector2(2, 2)
+texture = ExtResource("1_nc5ub")
+hframes = 12
+vframes = 11
+frame = 74
+
+[node name="Title" type="Label" parent="."]
+z_index = 10
+offset_left = -43.0
+offset_top = -48.0
+offset_right = 45.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.8039216, 0.78039217, 0.7411765, 1)
+theme_override_colors/font_shadow_color = Color(0.17953175, 0.1256387, 0.1556018, 1)
+theme_override_colors/font_outline_color = Color(0.15686275, 0.10980392, 0.13725491, 1)
+theme_override_constants/line_spacing = 8
+theme_override_constants/paragraph_spacing = 1
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 7
+theme_override_fonts/font = ExtResource("2_redmh")
+text = "Dungeon
+SEO
+Solutions Inc"
+horizontal_alignment = 1
