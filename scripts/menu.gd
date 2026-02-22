@@ -42,9 +42,10 @@ func _input(event):
             return
 
 func _start():
+    var start_scene := StateManager.get_start_scene_path()
     transition.play("fade_in")
     await transition.animation_finished
-    get_tree().change_scene_to_file("res://scenes/level_template.tscn")
+    get_tree().change_scene_to_file(start_scene)
 
     
 func _refresh_menu():

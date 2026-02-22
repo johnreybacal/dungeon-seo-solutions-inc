@@ -81,9 +81,10 @@ func _set_sfx_label():
     sfx_label.text = label
 
 func _exit_dungeon():
+    var exit_scene := StateManager.get_exit_scene_path()
     transition.play("fade_in")
     await transition.animation_finished
-    get_tree().change_scene_to_file("res://scenes/menu.tscn")
+    get_tree().change_scene_to_file(exit_scene)
 
 
 func hide_hud():

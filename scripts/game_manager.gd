@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var level: int
+@export var level: int = -1
 @onready var dungeon_tile_map: TileMapLayer = $DungeonTileMap
 @onready var map_guide_tile_map: TileMapLayer = $MapGuideTileMap
 @onready var camera: Camera2D = $Camera2D
@@ -15,6 +15,8 @@ var traps: Array[Vector2i] = []
 var trap_cooldowns: Dictionary[Vector2i, float]
 
 func _ready() -> void:
+    if level == -1:
+        level = StateManager.level
     MapManager.map_ready.connect(_draw_dungeon)
     MapManager.map_updated.connect(_update_map_guide)
     MapManager.generate_map(level)
